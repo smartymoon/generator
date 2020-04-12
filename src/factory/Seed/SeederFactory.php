@@ -19,6 +19,7 @@ class SeederFactory extends BaseFactory
     public function buildContent($content)
     {
         $content = str_replace('DummyClass', $this->getFileName(), $content);
+        $content = str_replace('DummySeedTimes', $this->seed_times, $content);
 
         return $content;
     }

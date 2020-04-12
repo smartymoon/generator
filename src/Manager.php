@@ -27,6 +27,7 @@ class Manager {
     public $has_many_relations = [];
     public $controller_namespace;
     public $route_file;
+    public $seed_times;
     public $all_config;
 
     public function __construct($all_config)
@@ -75,6 +76,9 @@ class Manager {
 
         // route_file
         $this->route_file = $config['route_file'];
+
+        // seed_times
+        $this->seed_times = $config['seed_times'];
 
         // model name
         if (!$config['model']) {
@@ -173,6 +177,7 @@ class Manager {
             'has_many_relations' => $this->has_many_relations,
             'controller_namespace' => $this->controller_namespace,
             'route_file' => $this->route_file,
+            'seed_times' => $this->seed_times,
             'enums' => $this->enums
         ]);
         $directory->launch();

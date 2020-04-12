@@ -21,7 +21,7 @@
         </el-dialog>
         <div class="w-1/4 h-full border-r">
             <el-form ref="form" :model="config" label-position="top" size="small">
-                <el-form-item label="模型名" class="w-2/5">
+                <el-form-item label="模型名" class="w-3/5">
                     <el-input v-model="config.model" placeholder="首字母大写">
                 </el-form-item>
 
@@ -40,6 +40,11 @@
                         <el-option value="wap.php" default>wap.php</el-option>
                     </el-select>
                 </el-form-item>
+
+                <el-form-item label="Seed Times" class="w-3/5">
+                    <el-input-number v-model="config.seed_times" :step="20"></el-input-number>
+                </el-form-item>
+
 
                 <el-form-item label="生成文件">
                     <el-checkbox-group v-model="config.may_create_files">
@@ -177,6 +182,7 @@
                                     <el-option value="rand(1, 5)" label="5 数字枚选"></el-option>
                                     <el-option value="rand(1, 6)" label="6 数字枚选"></el-option>
                                     <el-option value="rand(1, 10)" label="10内随机数"></el-option>
+                                    <el-option value="rand(1, 100)" label="1 - 100 随机数"></el-option>
                                     <el-option value="rand(10, 100)" label="10 - 100 随机数"></el-option>
                                     <el-option value="rand(100, 900)" label="100 - 900 随机数"></el-option>
                                     <el-option value="rand(1000, 9000)" label="1000 - 9000 随机数"></el-option>
@@ -309,6 +315,7 @@
                     hasMany: [],
                     controller_namespace: 'Wap',
                     route_file: 'wap.php',
+                    seed_times: 10,
                     admin_menu: '',
                     may_create_files: ['resource', 'repository'],
                     fields: [_.cloneDeep(field_template)]

@@ -56,6 +56,7 @@ abstract class BaseFactory {
         $this->model = $config['model'];
         $this->controller_namespace = $config['controller_namespace'];
         $this->route_file = $config['route_file'];
+        $this->seed_times = $config['seed_times'];
         $this->ucModel = ucfirst($this->model);
         $this->lcModel = lcfirst($this->model);
         $this->modelNamespace = 'App\Models\\'.$this->ucModel;
