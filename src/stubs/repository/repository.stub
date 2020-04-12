@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Repositories;
+
+use DummyModelNamespace;
+
+class DummyModelRepository extends  BaseRepository
+{
+    /**
+     * @inheritDoc
+     */
+    public function model() 
+    {
+        return DummyModel::class;
+    }
+
+    public function getList($params) 
+    {
+        $query = $this->model->select(['id', DummyFields]);
+
+        return $this->getPage($query);
+    }
+
+    public function getDetail($DummyLModel) 
+    {
+        return $DummyLModel->load(DummyHas);
+    }
+}

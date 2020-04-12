@@ -1,0 +1,30 @@
+{
+    "name": "smartymoon/generator",
+    "description": "Generate files to save time",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+	    "encore/laravel-admin": "^1.7",
+	    "orangehill/iseed": "^2.6",
+	    "bensampo/laravel-enum": "^1.32"
+    },
+    "authors": [
+        {
+            "name": "lee",
+            "email": "pp787qq@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Smartymoon\\generator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Smartymoon\\Generator\\GeneratorServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}

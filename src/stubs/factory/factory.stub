@@ -1,0 +1,10 @@
+<?php
+
+use DummyModelNamespace;
+use Smartymoon\Generator\Faker;
+
+$factory->define(DummyModel::class, function () {
+    return [
+        DummyFakers
+    ];
+});

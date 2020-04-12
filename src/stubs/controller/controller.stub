@@ -1,0 +1,32 @@
+<?php
+
+namespace DummyNamespace;
+
+DummyShowBaseController
+use DummyModelNamespace;
+use Illuminate\Http\Request;
+use App\Http\Resources\DummyModelResource;
+use App\Http\Resources\DummyModelCollectionResource;
+use App\Repositories\DummyModelRepository;
+
+class DummyClass extends Controller
+{
+    protected $DummyLModelRepository;
+
+    public function __construct(DummyModelRepository $DummyLModelRepository)
+    {
+        $this->DummyLModelRepository = $DummyLModelRepository;
+    }
+    
+    public function index(Request $request)
+    {
+        $list = DummyModelRepository::getList($request->all());
+        return new DummyModelCollectionResource($list);
+    }
+
+    public function show(DummyModel $DummyLModel)
+    {
+        DummyShowLoadManyRelation
+        return new DummyModelResource($DummyLModel);
+    }
+}

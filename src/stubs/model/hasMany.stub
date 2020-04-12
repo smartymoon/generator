@@ -1,0 +1,4 @@
+
+    public function DummyRelation() {
+        return $this->hasMany(DummyHasManyModel::class);
+    }
