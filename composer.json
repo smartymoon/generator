@@ -1,7 +1,6 @@
 {
     "name": "smartymoon/generator",
     "description": "Generate files to save time",
-    "type": "project",
     "license": "MIT",
     "require": {
 	    "encore/laravel-admin": "^1.7",
