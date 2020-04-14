@@ -59,6 +59,6 @@ abstract class BaseRepository
 
     protected function getPage(Builder $query)
     {
-        return $query->paginate(intval(request('per_page', 20)));
+        return $query->latest()->paginate(intval(request('per_page', 20)));
     }
 }
