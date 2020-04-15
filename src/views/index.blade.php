@@ -30,7 +30,7 @@
                 </el-form-item>
 
                 <el-form-item label="Controller Namespace" class="w-3/5">
-                    <el-select v-model="config.controller_namespace">
+                    <el-select v-model="config.controller_namespace" filterable  allow-create default-first-option clearable>
                         <el-option value="Wap" default>Wap</el-option>
                     </el-select>
                 </el-form-item>
