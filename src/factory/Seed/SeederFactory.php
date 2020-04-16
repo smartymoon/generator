@@ -33,6 +33,6 @@ class SeederFactory extends BaseFactory
     {
         system('cd '. base_path() .  '&& composer dump-autoload');
         sleep(15);
-        Artisan::call('db:seed --class '. $this->getFileName());
+        system('cd '. base_path() . '&& php artisan db:seed --class '. $this->getFileName());
     }
 }
