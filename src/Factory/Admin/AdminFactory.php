@@ -42,7 +42,7 @@ class AdminFactory extends BaseFactory
         }
 
         Artisan::call('iseed', [
-            'tables'  => 'admin_menu,admin_permissions,admin_role_menu,admin_role_permissions,admin_roles,admin_user_permissions,admin_users',
+            'tables'  => 'admin_menu,admin_permissions,admin_role_menu,admin_role_permissions,admin_roles,admin_user_permissions,admin_users,admin_role_users',
             '--force' => true
         ]);
 

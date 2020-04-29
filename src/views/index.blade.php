@@ -213,6 +213,9 @@
                                 <el-option-group label="网址">
                                     <el-option value="random_url()" label="URL"></el-option>
                                 </el-option-group>
+                                <el-option-group label="英文">
+                                    <el-option value="english_word()" label="英文单词"></el-option>
+                                </el-option-group>
                             </el-select>
                         </el-form-item>
                         <div class="w-2/3 pl-8">

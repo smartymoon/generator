@@ -72,4 +72,11 @@ class Faker
         $date = self::random_date('past');
         $no =  '360424'. $date->format('Ymd') . '0795';
     }
+
+    static public function english_word($len = 6)
+    {
+        $word = range('a', 'z');
+        shuffle($word);
+        return substr(implode($word), 0, $len);
+    }
 }
