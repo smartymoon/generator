@@ -183,6 +183,7 @@
                                     <el-option value="rand(1, 6)" label="6 数字枚选"></el-option>
                                     <el-option value="rand(1, 10)" label="10内随机数"></el-option>
                                     <el-option value="rand(1, 100)" label="1 - 100 随机数"></el-option>
+                                    <el-option value="rand(1, 500)" label="1 - 500 随机数"></el-option>
                                     <el-option value="rand(10, 100)" label="10 - 100 随机数"></el-option>
                                     <el-option value="rand(100, 900)" label="100 - 900 随机数"></el-option>
                                     <el-option value="rand(1000, 9000)" label="1000 - 9000 随机数"></el-option>
