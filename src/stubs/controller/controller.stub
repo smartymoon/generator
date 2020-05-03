@@ -20,7 +20,7 @@ class DummyClass extends Controller
     
     public function index(Request $request)
     {
-        $list = DummyModelRepository::getList($request->all());
+        $list = $this->DummyLModelRepository->getList($request->all());
         return new DummyModelCollectionResource($list);
     }
 
