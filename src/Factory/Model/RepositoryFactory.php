@@ -28,7 +28,7 @@ class RepositoryFactory extends BaseFactory
 
     protected function getFileName()
     {
-        return $this->ucModel . 'Repositories';
+        return $this->ucModel . 'Repository';
     }
 
     private function makeBaseRepository()

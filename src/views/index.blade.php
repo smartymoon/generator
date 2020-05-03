@@ -19,7 +19,7 @@
         <el-dialog title="结果" :visible.sync="dialogVisible">
             <div v-html="response"></div>
         </el-dialog>
-        <div class="w-1/4 h-full border-r">
+        <div class="w-1/4 h-full">
             <el-form ref="form" :model="config" label-position="top" size="small">
                 <el-form-item label="模型名" class="w-3/5">
                     <el-input v-model="config.model" placeholder="首字母大写">
