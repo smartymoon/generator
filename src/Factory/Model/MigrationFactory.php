@@ -3,6 +3,7 @@ namespace Smartymoon\Generator\Factory\Model;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use Smartymoon\Generator\Exceptions\GenerateException;
 use Smartymoon\Generator\Factory\BaseFactory;
 
 class MigrationFactory extends BaseFactory
@@ -15,6 +16,7 @@ class MigrationFactory extends BaseFactory
     protected $buildType = 'new';
     protected $stub = 'migration/migration.stub';
     protected $path = 'database/migrations/';
+    protected $right_methods = [];
 
 
     /**
@@ -23,7 +25,7 @@ class MigrationFactory extends BaseFactory
     // 1, 简单词替换 (无模板)
     // 2. 块替换, migrations, Factory, validation(todo) (无模板)
     // 3. 函数模板 (有模板)
-    // 4. 给已有文件打补丁 （route）
+    // 4. 给已有文件打补丁 
     /*
      * @return string $content
      */
@@ -56,19 +58,19 @@ class MigrationFactory extends BaseFactory
         //    $table->timestamp('failed_at')->useCurrent();
         $content = "\n";
         foreach($this->fields as $field) {
-            $content .= $this->tab(3).'$table->'. $field['type'];
-            foreach($field['migrations'] as $otherMethod) {
-                $content .= '->'.$otherMethod;
+            $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['type']);
+            foreach($field['migration'] as $migrate) {
+                $content .= '->'. $this->makeMigrate($migrate);
             }
             $content .= ";\n";
-            $content .=  $field['foreign'] ?  ($this->tab(3) . $field['foreign']. "\n") : '';
+            $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
+            $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
         }
         return $content;
     }
 
     protected function afterGenerate()
     {
-        // system('php artisan migrate');
         Artisan::call('migrate');
     }
 
@@ -83,4 +85,86 @@ class MigrationFactory extends BaseFactory
         }
     }
 
+    /** 
+    * todo 这里的 nullable 有什么用
+    */
+    public function makeForeign($field_name, $foreign_policy, $foreign_table = '')
+    {
+        if (!$foreign_policy) {
+            return '';
+        }
+
+        $foreign = '$table->foreignId(\''. $field_name . '\')';
+
+        if ($foreign_table == '') {
+            $foreign .=  '->constrained()';
+        } else {
+            $foreign .=  '->constrained(\''. $foreign_table .'\')';
+        }
+
+        if ($foreign_policy == 'cascade') {
+            $foreign .= "->onDelete('cascade')";
+        }
+
+        return $foreign .= ';';
+
+    }
+
+    public function makeMigrate($migrate)
+    {
+        $this->checkMigrateMethod($migrate);
+        return $pos = strpos($migrate, '(') ? $migrate : $migrate . '()'; 
+    }
+
+    public function checkMigrateMethod(String $method)
+    {
+        $pos = strpos($method, '(');
+        $toCheck = $pos === false ? $method : 
+            substr($method, 0, $pos);
+        if(!in_array($toCheck, $this->right_methods)) {
+            throw new GenerateException('表字段'. $this->field_name . '的类型 '. $toCheck. ' 不存在');
+        }
+    }
+
+    public function rightMethodList()
+    {
+
+        if (count($this->right_methods) == 0) {
+            $this->right_methods = array_merge(get_class_methods(Blueprint::class), [
+                'after',
+                'always',
+                'autoIncrement',
+                'change',
+                'charset',
+                'collation',
+                'comment',
+                'default',
+                'first',
+                'generatedAs',
+                'index',
+                'nullable',
+                'primary',
+                'spatialIndex',
+                'storedAs',
+                'unique',
+                'unsigned',
+                'useCurrent',
+                'virtualAs',
+                'persisted',
+            ]);
+        }
+        return $this->right_methods;
+    }
+
+    public function makeFieldType($field_config_type)
+    {
+        // type 可能 abc() , abc
+        $this->checkMigrateMethod($field_config_type);
+        $pos = strpos($field_config_type, '(');
+        if ($pos === false) {
+            return $field_config_type . '(\''. $this->field_name . '\')';
+        } else {
+            return str_replace('(', '(\''. $this->field_name .'\', ', $field_config_type);
+        }
+    }
 }

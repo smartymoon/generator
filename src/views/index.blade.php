@@ -19,6 +19,7 @@
         <el-dialog title="结果" :visible.sync="dialogVisible">
             <div v-html="response"></div>
         </el-dialog>
+
         <div class="w-1/4 h-full">
             <el-form ref="form" :model="config" label-position="top" size="small">
                 <el-form-item label="模型名" class="w-3/5">
@@ -35,12 +36,6 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="Route File" class="w-3/5">
-                    <el-select v-model="config.route_file">
-                        <el-option value="wap.php" default>wap.php</el-option>
-                    </el-select>
-                </el-form-item>
-
                 <el-form-item label="Seed Times" class="w-3/5">
                     <el-input-number v-model="config.seed_times" :step="20"></el-input-number>
                 </el-form-item>
@@ -48,9 +43,6 @@
 
                 <el-form-item label="生成文件">
                     <el-checkbox-group v-model="config.may_create_files">
-                        <div>
-                            <el-checkbox label="admin"></el-checkbox>
-                        </div>
                         <div>
                             <el-checkbox label="resource"></el-checkbox>
                             <el-checkbox label="repository"></el-checkbox>
@@ -62,9 +54,6 @@
                     </el-checkbox-group>
                 </el-form-item>
 
-                <el-form-item label="后台菜单名" class="w-3/5" v-show="config.may_create_files.includes('admin')">
-                    <el-input v-model="config.admin_menu" placeholder="for laravel-admin">
-                </el-form-item>
             </el-form>
             <div class="pt-10 fixed right-0 bottom-0 pr-40 pb-32">
                 <div class="mb-2">
@@ -318,20 +307,22 @@
                     model: '',
                     hasMany: [],
                     controller_namespace: 'Wap',
-                    route_file: 'wap.php',
                     seed_times: 10,
-                    admin_menu: '',
                     may_create_files: ['resource', 'repository'],
                     fields: [_.cloneDeep(field_template)]
                 }
             },
             methods: {
+                showResult(content) {
+                    this.$alert(content, '结果', {
+                        confirmButtonText: '确定',
+                    });
+                },
                 submit() {
                     this.loading = true
-                    axios.post('/lee', this.config).then(({
-                        data
-                    }) => {
+                    axios.post('/lee', this.config).then(({ data }) => {
                         // todo error show
+                        this.showResult(data)
                         this.response = data
                         this.loading = false
                         this.dialogVisible = true

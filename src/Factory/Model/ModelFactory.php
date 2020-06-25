@@ -26,7 +26,7 @@ class ModelFactory extends BaseFactory
 
     // 3. 函数模板 (有模板)
 
-    // 4. 给已有文件打补丁 （route）
+    // 4. 给已有文件打补丁 
 
     /*
      * @return string $content

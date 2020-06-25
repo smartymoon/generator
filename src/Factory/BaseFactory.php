@@ -2,6 +2,8 @@
 namespace Smartymoon\Generator\Factory;
 
 use Illuminate\Support\Str;
+use Smartymoon\Generator\Exceptions\GenerateException;
+use Smartymoon\Generator\GenerateLog;
 
 /**
  * 
@@ -41,8 +43,9 @@ abstract class BaseFactory {
 
     // 3. 函数模板 (有模板)
 
-    // 4. 给已有文件打补丁 （route）
+    // 4. 给已有文件打补丁 
     abstract public function buildContent($content);
+
     abstract protected function getFileName();
 
     /**
@@ -52,10 +55,8 @@ abstract class BaseFactory {
     public function __construct($config)
     {
         $this->commander = $config;
-        $this->admin_menu = $config['admin_menu'];
         $this->model = $config['model'];
         $this->controller_namespace = $config['controller_namespace'];
-        $this->route_file = $config['route_file'];
         $this->seed_times = $config['seed_times'];
         $this->ucModel = ucfirst($this->model);
         $this->lcModel = lcfirst($this->model);
@@ -85,9 +86,9 @@ abstract class BaseFactory {
         }
 
         if ($res) {
-            dump('文件生成成功: '.$file);
+            GenerateLog::record('文件生成成功: '.$file);
         } else {
-            dump('文件没生成: '.$file);
+            GenerateLog::record('文件没生成: '.$file);
         }
         $this->afterGenerate();
     }
@@ -123,7 +124,7 @@ abstract class BaseFactory {
             $content = file_get_contents(__DIR__. '/../stubs/'.$stub);
             if ($content === false)
             {
-                dd('stub: '. $stub . '不存在');
+                throw new GenerateException('stub: '. $stub . '不存在');
             }
         }
         return $content;

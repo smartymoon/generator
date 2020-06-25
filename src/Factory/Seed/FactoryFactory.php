@@ -32,8 +32,18 @@ class FactoryFactory extends BaseFactory
     {
         $content = "\n";
         foreach($this->fields as $field) {
-            $content .= $this->tab(2).$field['faker']. "\n";
+            $content .= $this->tab(2). $this->makeFaker($field['field_name'], $field['faker']). "\n";
         }
         return $content;
+    }
+
+    private function makeFaker($field_name, $faker)
+    {
+        if ($faker) {
+            return "'$field_name' => "
+                .($faker ? 'Faker::'.$faker : '')
+                .',';
+        }
+        return '';
     }
 }

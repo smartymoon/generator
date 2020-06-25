@@ -2,6 +2,7 @@
 namespace Smartymoon\Generator;
 use Smartymoon\Generator\factory\Director;
 use Illuminate\Support\Str;
+use Smartymoon\Generator\Exceptions\GenerateException;
 
 class Manager {
 
@@ -21,12 +22,10 @@ class Manager {
     ];
 
     public $model = '';
-    public $admin_menu = '';
     public $fields = [];
     public $to_create_files = [];
     public $has_many_relations = [];
     public $controller_namespace;
-    public $route_file;
     public $seed_times;
     public $all_config;
 
@@ -46,9 +45,8 @@ class Manager {
         // step 0: git commit
         $base_path = base_path();
 
-        dump('git local files');
-        dump(shell_exec('cd '. $base_path . ' && git commit -am  \'for sm:generate commit\''));
-
+        GenerateLog::record('git commit local files');
+        shell_exec('cd '. $base_path . ' && git commit -am  \'for sm:generate commit\'');
 
         // step 1 (数据): 通过一个配置文件,检查数据(fields 的方法是否存在)
         $this->setAttributes($this->all_config);
@@ -59,11 +57,6 @@ class Manager {
         // step 3 (auto-load):
         $this->dumpAutoLoad();
 
-        // step 4 (结果): git 实现
-        dump(shell_exec('cd '. $base_path .'&& git status'));
-
-        // $this->getCurrentProperties();
-        dump('生成完毕');
     }
 
     private function setAttributes($config)
@@ -71,18 +64,12 @@ class Manager {
         // controller_namespace
         $this->controller_namespace = $config['controller_namespace'];
 
-        // admin_menu
-        $this->admin_menu = $config['admin_menu'];
-
-        // route_file
-        $this->route_file = $config['route_file'];
-
         // seed_times
         $this->seed_times = $config['seed_times'];
 
         // model name
         if (!$config['model']) {
-            dd('model 名不能为空');
+            throw new GenerateException('model 名不能为空');
         }
 
         $this->model = $config['model'];
@@ -120,10 +107,9 @@ class Manager {
     private function setFields($fields)
     {
         $new_fields = array_map( function ($field) {
-            $fieldMaker = new FieldMaker($field['field_name']);
+
             if (!Str::endsWith( $field['field_name'], '_id') && $field['belongsTo'] == true) {
-                dump($field['field_name']. ' 无法设置为 BelongsTo');
-                die();
+                throw new GenerateException($field['field_name']. ' 无法设置为 BelongsTo');
             }
             return [
                 // field_name
@@ -133,19 +119,22 @@ class Manager {
                 'belongsTo' => $field['belongsTo'],
 
                 // type
-                'type' => $fieldMaker->makeFieldType($field['type']),
+                'type' => $field['type'],
 
                 // migrations
-                'migrations' => $fieldMaker->makeMigrations($field['migration']),
+                'migration' => $field['migration'],
 
                 // foreign
-                'foreign' => $fieldMaker->makeForeign($field['field_name'], $field['foreign']),
+                // 'foreign' => $fieldMaker->makeForeign($field['field_name'], $field['foreign']),
+                'foreign_policy' => $field['foreign_policy'],
+
+                'foreign_table' => $field['foreign_table'],
 
                 // faker
-                'faker' => $fieldMaker->makeFaker($field['faker']),
+                'faker' => $field['faker'],
 
                 // rules
-                'rules' => $fieldMaker->makeRules($field),
+                'rules' => $field['rules'],
 
                 // enums
             ];
@@ -165,18 +154,15 @@ class Manager {
         }
     }
 
-
     private function makeFiles()
     {
         $directory = new Director([
             'fields' => $this->fields,
             'model' => $this->model,
-            'admin_menu' => $this->admin_menu,
             'fields' => $this->fields,
             'to_create_files' => $this->to_create_files,
             'has_many_relations' => $this->has_many_relations,
             'controller_namespace' => $this->controller_namespace,
-            'route_file' => $this->route_file,
             'seed_times' => $this->seed_times,
             'enums' => $this->enums
         ]);
@@ -196,7 +182,6 @@ class Manager {
     private function dumpAutoLoad()
     {
         system('composer dump-autoload');
-        dump('composer dump-autoload');
     }
 
 }

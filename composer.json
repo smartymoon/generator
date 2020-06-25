@@ -3,7 +3,6 @@
     "description": "Generate files to save time",
     "license": "MIT",
     "require": {
-	    "encore/laravel-admin": "^1.7",
 	    "orangehill/iseed": "^2.6",
 	    "bensampo/laravel-enum": "^1.32"
     },
