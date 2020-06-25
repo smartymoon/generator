@@ -59,13 +59,17 @@ class MigrationFactory extends BaseFactory
         //    $table->timestamp('failed_at')->useCurrent();
         $content = "\n";
         foreach($this->fields as $field) {
-            $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
-            foreach($field['migration'] as $migrate) {
-                $content .= '->'. $this->makeMigrate($field['field_name'], $migrate);
+
+            if ($field['foreign_policy']) {
+                $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
+                $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
+            } else {
+                $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
+                foreach($field['migration'] as $migrate) {
+                    $content .= '->'. $this->makeMigrate($field['field_name'], $migrate);
+                }
+                $content .= ";\n";
             }
-            $content .= ";\n";
-            $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
-            $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
         }
         return $content;
     }
