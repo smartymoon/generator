@@ -1,6 +1,7 @@
 <?php
 namespace Smartymoon\Generator\Factory\Model;
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Smartymoon\Generator\Exceptions\GenerateException;
@@ -58,9 +59,9 @@ class MigrationFactory extends BaseFactory
         //    $table->timestamp('failed_at')->useCurrent();
         $content = "\n";
         foreach($this->fields as $field) {
-            $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['type']);
+            $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
             foreach($field['migration'] as $migrate) {
-                $content .= '->'. $this->makeMigrate($migrate);
+                $content .= '->'. $this->makeMigrate($field['field_name'], $migrate);
             }
             $content .= ";\n";
             $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
@@ -110,23 +111,24 @@ class MigrationFactory extends BaseFactory
 
     }
 
-    public function makeMigrate($migrate)
+    public function makeMigrate($field_name, $migrate)
     {
-        $this->checkMigrateMethod($migrate);
+        $this->checkMigrateMethod($field_name, $migrate);
         return $pos = strpos($migrate, '(') ? $migrate : $migrate . '()'; 
     }
 
-    public function checkMigrateMethod(String $method)
+    public function checkMigrateMethod(String $name, String $method)
     {
         $pos = strpos($method, '(');
         $toCheck = $pos === false ? $method : 
             substr($method, 0, $pos);
-        if(!in_array($toCheck, $this->right_methods)) {
-            throw new GenerateException('表字段'. $this->field_name . '的类型 '. $toCheck. ' 不存在');
+
+        if(!in_array($toCheck, $this->getRightMethodList())) {
+            throw new GenerateException('表字段'. $name . '的类型 '. $toCheck. ' 不存在');
         }
     }
 
-    public function rightMethodList()
+    public function getRightMethodList()
     {
 
         if (count($this->right_methods) == 0) {
@@ -156,15 +158,15 @@ class MigrationFactory extends BaseFactory
         return $this->right_methods;
     }
 
-    public function makeFieldType($field_config_type)
+    public function makeFieldType($field_name, $field_config_type)
     {
         // type 可能 abc() , abc
-        $this->checkMigrateMethod($field_config_type);
+        $this->checkMigrateMethod($field_name, $field_config_type);
         $pos = strpos($field_config_type, '(');
         if ($pos === false) {
-            return $field_config_type . '(\''. $this->field_name . '\')';
+            return $field_config_type . '(\''. $field_name . '\')';
         } else {
-            return str_replace('(', '(\''. $this->field_name .'\', ', $field_config_type);
+            return str_replace('(', '(\''. $field_name .'\', ', $field_config_type);
         }
     }
 }

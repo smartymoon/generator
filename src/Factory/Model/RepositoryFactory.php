@@ -11,7 +11,7 @@ class RepositoryFactory extends BaseFactory
     protected $stub = 'repository/repository.stub';
     protected $path = 'app/Repositories/';
     protected $baseRepositoryRealPath = 'app/Repositories/BaseRepository.php';
-    protected $baseRepositoryStubPath = 'repository/BaseRepository.php';
+    protected $baseRepositoryStubPath = 'repository/BaseRepository.stub';
 
     /**
      * @inheritDoc
@@ -35,7 +35,7 @@ class RepositoryFactory extends BaseFactory
     {
         $absoluteRealPath = base_path($this->baseRepositoryRealPath);
         if(!file_exists($absoluteRealPath)) {
-            $source = __DIR__ . '/../stubs/'. $this->baseRepositoryStubPath;
+            $source = __DIR__ . '/../../stubs/'. $this->baseRepositoryStubPath;
             copy($source ,$absoluteRealPath);
         }
     }

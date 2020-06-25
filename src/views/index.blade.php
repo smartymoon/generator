@@ -149,10 +149,13 @@
                             <el-option value="nullableUuidMorphs"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="外键" class="w-2/3 ml-12">
-                        <el-radio v-model="field.foreign" label="">无</el-radio>
-                        <el-radio v-model="field.foreign" label="cascade">cascade(都删)</el-radio>
-                        <el-radio v-model="field.foreign" label="restrict">restrict(禁删)</el-radio>
+                    <el-form-item label="外键" class="ml-12">
+                        <el-radio v-model="field.foreign_policy" label="">无</el-radio>
+                        <el-radio v-model="field.foreign_policy" label="cascade">cascade(都删)</el-radio>
+                        <el-radio v-model="field.foreign_policy" label="restrict">restrict(禁删)</el-radio>
+                    </el-form-item>
+                    <el-form-item label="外键表" class="ml-8">
+                        <el-input v-model="field.foreign_table" placeholder="表名" class="w-32" size="mini"></el-input>
                     </el-form-item>
                 </div>
                 <div>
@@ -284,7 +287,8 @@
             field_name: '',
             belongsTo: false,
             type: 'string',
-            foreign: '',
+            foreign_policy: '',
+            foreign_table: '',
             migration: [],
             migration_params: {
                 default: '',
@@ -313,8 +317,11 @@
                 }
             },
             methods: {
-                showResult(content) {
+                // type: success or error
+                showResult(type, content) {
                     this.$alert(content, '结果', {
+                        type: type,
+                        customClass: 'w-1/2 whitespace-pre-wrap',
                         confirmButtonText: '确定',
                     });
                 },
@@ -322,10 +329,21 @@
                     this.loading = true
                     axios.post('/lee', this.config).then(({ data }) => {
                         // todo error show
-                        this.showResult(data)
-                        this.response = data
+                        if (data.code === 201) {
+                            this.showResult('success', '成功')
+                        } else if (data.code === 204) {
+                            this.showResult('warning', data.message)
+                        }
+                    }).catch(err => {
+                        const info = err.response.data
+                        this.showResult('error', 
+`${info.exception}
+${info.file}
+${info.line} 行
+${info.message}`
+                        )
+                    }).finally(() => {
                         this.loading = false
-                        this.dialogVisible = true
                     })
                 },
                 dropTable() {

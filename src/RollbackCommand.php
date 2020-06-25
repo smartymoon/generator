@@ -16,8 +16,8 @@ class RollbackCommand extends Command
 
     public function handle()
     {
-        system('git reset --hard');
-        system('git clean -f');
+        exec('git reset --hard');
+        exec('git clean -f');
     }
 
 }

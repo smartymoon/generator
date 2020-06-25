@@ -181,7 +181,7 @@ class Manager {
 
     private function dumpAutoLoad()
     {
-        system('composer dump-autoload');
+        exec('composer dump-autoload');
     }
 
 }

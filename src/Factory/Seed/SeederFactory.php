@@ -31,8 +31,8 @@ class SeederFactory extends BaseFactory
 
     protected function afterGenerate()
     {
-        system('cd '. base_path() .  '&& composer dump-autoload');
-        sleep(15);
-        system('cd '. base_path() . '&& php artisan db:seed --class '. $this->getFileName());
+        exec('cd '. base_path() .  '&& composer dump-autoload');
+        // sleep(15);
+        exec('cd '. base_path() . '&& php artisan db:seed --class '. $this->getFileName());
     }
 }
