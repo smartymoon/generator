@@ -26,7 +26,7 @@
                     <el-input v-model="config.model" placeholder="首字母大写">
                 </el-form-item>
 
-                <el-form-item label="hasMany" class="w-3/5">
+                <el-form-item label="hasMany(写 Model 名)" class="w-3/5">
                     <el-select v-model="config.hasMany" multiple allow-create filterable default-first-option placeholder="可写多个"></el-select>
                 </el-form-item>
 
@@ -174,6 +174,8 @@
                                     <el-option value="rand(1, 5)" label="5 数字枚选"></el-option>
                                     <el-option value="rand(1, 6)" label="6 数字枚选"></el-option>
                                     <el-option value="rand(1, 10)" label="10内随机数"></el-option>
+                                    <el-option value="rand(1, 20)" label="1 - 20 随机数"></el-option>
+                                    <el-option value="rand(1, 50)" label="1 - 50 随机数"></el-option>
                                     <el-option value="rand(1, 100)" label="1 - 100 随机数"></el-option>
                                     <el-option value="rand(1, 500)" label="1 - 500 随机数"></el-option>
                                     <el-option value="rand(10, 100)" label="10 - 100 随机数"></el-option>
