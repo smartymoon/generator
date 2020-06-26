@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class DummyModel extends Model
 {
     protected $fillable = [DummyFillable];
+    
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');    
+    }
 
 DummyHasMany
 
