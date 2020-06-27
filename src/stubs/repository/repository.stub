@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use DummyModelNamespace;
+use Illuminate\Http\Request;
 
 class DummyModelRepository extends  BaseRepository
 {
@@ -14,9 +15,15 @@ class DummyModelRepository extends  BaseRepository
         return DummyModel::class;
     }
 
-    public function getList($params) 
+    public function getList(Request $request) 
     {
         $query = $this->model->select(['id', DummyFields]);
+
+        /*
+        if ($user_id = $request->input('user_id)) {
+            $query = $query->where('user_id', $user_id);
+        }
+        */
 
         return $this->getPage($query);
     }

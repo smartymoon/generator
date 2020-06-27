@@ -37,7 +37,7 @@ Trait ResourceFactoryTrait
 
         // hasMany
         foreach($this->hasMany as $hasMany) {
-            $hasMany_name = $this->tableName($hasMany);
+            $hasMany_name = \Str::of($hasMany)->camel()->plural();
             $content .= $this->tab($this->field_tabs)."'$hasMany_name' => " . $upperObj .'->' . "$hasMany_name,\n";
         }
 
