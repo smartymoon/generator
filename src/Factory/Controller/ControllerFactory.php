@@ -67,7 +67,7 @@ class ControllerFactory extends BaseFactory
         if($this->hasMany) {
             return '$'.lcfirst($this->model).'->load(['.
                 implode(', ', array_map(function($hasMany){
-                    $name = $this->tableName($hasMany);
+                    $name = $this->has($hasMany);
                     return "'$name'";
                 } ,$this->hasMany))
                 .']);';

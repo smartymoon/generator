@@ -56,7 +56,8 @@ class RepositoryFactory extends BaseFactory
 
         $content = '['."\n";
         foreach($this->hasMany as $hasMany) {
-           $content .=  $this->tab(3) . "'${hasMany}', ". "\n";
+           $name = $this->hasManyRelation($hasMany);
+           $content .=  $this->tab(3) . "'${name}', ". "\n";
         }
         return $content . $this->tab(2) . ']';
     }

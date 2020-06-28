@@ -59,7 +59,7 @@ class ModelFactory extends BaseFactory
 
         $content = $this->getStub('model/hasMany.stub');
         foreach($this->hasMany as $hasMany) {
-           $content =  str_replace('DummyRelation', \Str::of($hasMany)->camel()->plural(), $content);
+           $content =  str_replace('DummyRelation', $this->hasManyRelation($hasMany), $content);
            $content =  str_replace('DummyHasManyModel', $hasMany, $content);
         }
         return $content;

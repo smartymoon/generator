@@ -157,6 +157,11 @@ abstract class BaseFactory {
         return Str::plural(Str::snake($name));
     }
 
+    protected function hasManyRelation(string $name)
+    {
+        return \Str::of($name)->camel()->plural();
+    }
+
     public function replaceFile($content)
     {
         return file_put_contents($this->realPath, $content);
