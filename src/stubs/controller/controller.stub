@@ -26,7 +26,6 @@ class DummyClass extends Controller
 
     public function show(DummyModel $DummyLModel)
     {
-        DummyShowLoadManyRelation
         return new DummyModelResource($DummyLModel);
     }
 }

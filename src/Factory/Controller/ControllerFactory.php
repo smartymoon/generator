@@ -30,7 +30,6 @@ class ControllerFactory extends BaseFactory
         $content = str_replace('DummyNamespace', $this->getControllerNamespace(), $content);
         $content = str_replace('DummyShowBaseController', $this->getBaseController(), $content);
         $content = str_replace('DummyClass', $this->getFileName(), $content);
-        $content = str_replace('DummyShowLoadManyRelation', $this->getShowLoad(), $content);
 
         return $content;
     }
@@ -62,17 +61,4 @@ class ControllerFactory extends BaseFactory
               "";
     }
 
-    private function getShowLoad()
-    {
-        if($this->hasMany) {
-            return '$'.lcfirst($this->model).'->load(['.
-                implode(', ', array_map(function($hasMany){
-                    $name = $this->has($hasMany);
-                    return "'$name'";
-                } ,$this->hasMany))
-                .']);';
-        } else {
-            return '';
-        }
-    }
 }
