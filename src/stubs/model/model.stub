@@ -12,9 +12,6 @@ class DummyModel extends Model
     {
         return $date->format('Y-m-d');    
     }
-
 DummyHasMany
-
 DummyBelongsTo
-
 }
