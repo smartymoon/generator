@@ -5,7 +5,7 @@ namespace Smartymoon\Generator\Factory\Controller;
 
 use Smartymoon\Generator\Factory\BaseFactory;
 
-class ControllerFactory extends BaseFactory
+class ControllerFactory extends BaseFactory implements
 {
 
     protected $buildType = 'new';
@@ -17,7 +17,7 @@ class ControllerFactory extends BaseFactory
     {
         if (!in_array('repository', $config['to_create_files'])) {
            $this->isSimple = true;
-           $this->stub = 'controller/simpleController.stub'; 
+           $this->stub = 'controller/simpleController.stub';
         }
         parent::__construct($config);
     }

@@ -3,7 +3,8 @@ namespace Smartymoon\Generator;
 
 class Faker 
 {
-    static public function random_image($shape) {
+    static public function random_image($shape): string 
+    {
         if ($shape === 'square') {
             return "https://dummyimage.com/150x150";
         } else if ($shape == 'fat') {

@@ -2,16 +2,17 @@
 namespace Smartymoon\Generator\Factory;
 
 use Illuminate\Support\Str;
+use Smartymoon\Generator\Config;
 use Smartymoon\Generator\Exceptions\GenerateException;
 use Smartymoon\Generator\GenerateLog;
 
 /**
- * 
+ *
  * 每个实现类只专注于一个文件
  * Class BaseFactory
- * 
+ *
  */
-abstract class BaseFactory {
+class BaseFactory {
 
     /**
      * @var array
@@ -37,37 +38,38 @@ abstract class BaseFactory {
 
     protected $lcModel;
 
+    /********** new **********/
+    protected Config $config;
+
     // 1, 简单词替换 (无模板)
 
     // 2. 块替换, migrations, Factory, validation(todo) (无模板)
 
     // 3. 函数模板 (有模板)
 
-    // 4. 给已有文件打补丁 
-    abstract public function buildContent($content);
-
-    abstract protected function getFileName();
+    // 4. 给已有文件打补丁
 
     /**
      * BaseFactory constructor.
      * @param $allConfig
      */
-    public function __construct($config)
+    public function __construct(Config $config)
     {
-        $this->commander = $config;
-        $this->model = $config['model'];
-        $this->controller_namespace = $config['controller_namespace'];
-        $this->seed_times = $config['seed_times'];
-        $this->ucModel = ucfirst($this->model);
-        $this->lcModel = lcfirst($this->model);
-        $this->modelNamespace = 'App\Models\\'.$this->ucModel;
-        $this->hasMany = $config['has_many_relations'];
-        $this->fields = $config['fields'];
-        $this->setPath();
-        $this->realPath = base_path($this->path);
-        if ($this->buildType == 'new' && !is_dir($this->realPath)) {
-            mkdir($this->realPath);
-        }
+          $this->config = $config;
+//        $this->commander = $config;
+//        $this->model = $config['model'];
+//        $this->controller_namespace = $config['controller_namespace'];
+//        $this->seed_times = $config['seed_times'];
+//        $this->ucModel = ucfirst($this->model);
+//        $this->lcModel = lcfirst($this->model);
+//        $this->modelNamespace = 'App\Models\\'.$this->ucModel;
+//        $this->hasMany = $config['has_many_relations'];
+//        $this->fields = $config['fields'];
+//        $this->setPath();
+//        $this->realPath = base_path($this->path);
+//        if ($this->buildType == 'new' && !is_dir($this->realPath)) {
+//            mkdir($this->realPath);
+//        }
     }
 
 

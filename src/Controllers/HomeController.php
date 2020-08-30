@@ -3,6 +3,7 @@ namespace Smartymoon\Generator\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Smartymoon\Generator\Config;
 use Smartymoon\Generator\Exceptions\GenerateException;
 use Smartymoon\Generator\Manager;
 

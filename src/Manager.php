@@ -31,7 +31,7 @@ class Manager {
 
     public function __construct($all_config)
     {
-       $this->all_config = $all_config; 
+       $this->all_config = $all_config;
     }
 
 
@@ -147,7 +147,7 @@ class Manager {
     {
         $this->to_create_files = array_merge(
             $may_create_files,
-            $this->must_create_files, 
+            $this->must_create_files,
         );
         if (in_array('repository', $may_create_files)) {
             $this->to_create_files[] = 'collectionResource';
