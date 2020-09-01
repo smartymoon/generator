@@ -1,83 +1,67 @@
 <?php
 namespace Smartymoon\Generator\Factory\Model;
 
-use Illuminate\Support\Str;
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class ModelFactory extends BaseFactory
+/**
+ * Class ModelFactory
+ * @package Smartymoon\Generator\Factory\Model
+ */
+class ModelFactory extends MakeFactory implements FactoryContract
 {
-    /*
-     * 可选 new,  replace
-     * new: 制做新的文件
-     * replace:
-     */
-    protected $buildType = 'new';
-    protected $stub = 'model/model.stub';
-    protected $path = 'app/Models/';
-
-
-    /**
-     * @inheritDoc
-     */
-
-    // 1, 简单词替换 (无模板)
-
-    // 2. 块替换, migrations, Factory, validation(todo) (无模板)
-
-    // 3. 函数模板 (有模板)
-
-    // 4. 给已有文件打补丁 
-
-    /*
-     * @return string $content
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
+        $content = $this->replaceNamespace('App\Models', 'model/model.stub');
         $content = str_replace('DummyFillable', $this->makeFillable(), $content);
         $content = str_replace('DummyHasMany', $this->makeHasMany(), $content);
         $content = str_replace('DummyBelongsTo', $this->makeBelongsTo(), $content);
-
-        // 1. get stub
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel;
+        $base_path = base_path('app/Models/');
+        return $this->dealModulePath($base_path) . $this->getModelClass() . '.php';
     }
 
-    private function makeFillable()
+    private function makeFillable(): string
     {
-        return collect($this->fields)->pluck('field_name')->map(function($field) {
+        return collect($this->config->fields)->pluck('field_name')->map(function($field) {
            return "'${field}'";
         })->implode(',');
     }
 
-    private function makeHasMany()
+    private function makeHasMany(): string
     {
-        if (!$this->hasMany) return '';
+        if (!$this->config->hasManyRelations) return '';
 
         $content = $this->getStub('model/hasMany.stub');
-        foreach($this->hasMany as $hasMany) {
-           $content =  str_replace('DummyRelation', $this->hasManyRelation($hasMany), $content);
-           $content =  str_replace('DummyHasManyModel', $hasMany, $content);
+
+        foreach($this->config->hasManyRelations as $relation) {
+           $content =  str_replace('DummyRelation', $this->hasManyMethodName($relation), $content);
+           $content =  str_replace('DummyHasManyModel', $this->getModelClass($relation), $content);
         }
         return $content;
     }
 
-    private function makeBelongsTo()
+    private function makeBelongsTo(): string
     {
         $function_tpl = $this->getStub('model/belongsTo.stub');
         $content = '';
-        foreach($this->fields as $field) {
+        foreach($this->config->fields as $field) {
             if ($field['belongsTo']) {
                 $function_name = substr($field['field_name'], 0, -3);
-                $content_temp =  str_replace('DummyRelation',
+                $content_temp =  str_replace(
+                    'DummyRelation',
                     $function_name,
-                    $function_tpl);
-                $content_temp = str_replace('DummyBelongsToModel',
-                    Str::studly($function_name),
-                    $content_temp);
+                    $function_tpl
+                );
+                $content_temp = str_replace(
+                    'DummyBelongsToModel',
+                    $this->getModelClass($function_name),
+                    $content_temp
+                );
                 $content .= $content_temp;
             }
         }

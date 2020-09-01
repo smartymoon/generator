@@ -3,47 +3,45 @@
 
 namespace Smartymoon\Generator\Factory\Seed;
 
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class FactoryFactory extends BaseFactory
+/**
+ * Class FactoryFactory
+ * @package Smartymoon\Generator\Factory\Seed
+ */
+class FactoryFactory extends MakeFactory implements FactoryContract
 {
+    protected string $stubFile = 'Factory/Factory.stub';
 
-    protected $buildType = 'new';
-    protected $stub = 'Factory/Factory.stub';
-    protected $path = 'database/factories/';
-
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-
-        $content = str_replace('DummyFakers', $this->makeFakers(), $content);
-
-        return $content;
+        return str_replace('DummyFakers', $this->makeFakers(), $this->getStub($this->stubFile));
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel . 'Factory';
+        return $this->dealModulePath(base_path('database/factories/')) . $this->getModelClass() . 'Factory.php';
     }
 
-    private function makeFakers()
+
+    private function makeFakers(): string
     {
         $content = "\n";
-        foreach($this->fields as $field) {
+        foreach($this->config->fields as $field) {
             $content .= $this->tab(2). $this->makeFaker($field['field_name'], $field['faker']). "\n";
         }
         return $content;
     }
 
-    private function makeFaker($field_name, $faker)
+    private function makeFaker(string $field_name, string $faker): string
     {
         if ($faker) {
             return "'$field_name' => "
-                .($faker ? 'Faker::'.$faker : '')
+                .('Faker::'.$faker)
                 .',';
         }
         return '';
     }
+
 }

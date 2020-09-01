@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Smartymoon\Generator\Exceptions\GenerateException;
 
+/**
+ * 用于处理所有的 Request 参数
+ * @package Smartymoon\Generator
+ */
 class Config
 {
     /**
@@ -11,7 +15,7 @@ class Config
      * @var string | /
      */
     public string $module;
-    private string $model;
+    public bool $inModule;
 
     /**
      * $fields = [
@@ -41,8 +45,15 @@ class Config
     public array $fields;
     public int $seedTimes;
     public array $hasManyRelations;
+    public bool $hasRepository;
+    public array $enums;
+
+    private string $model;
+
     /**
      * 初始化
+     * @param Request $request
+     * @throws GenerateException
      */
     public function __construct(Request $request)
     {
@@ -58,15 +69,20 @@ class Config
         $this->setHasMany($request->input('hasMany', []));
 
         // $fields
-        $this->setFields($config['fields']);
+        $this->setFields($request->input('fields'));
 
-        // $may_create_files
-        $this->setToCreateFiles($config['may_create_files']);
+        $this->inModule =  $this->module === '/';
+
+        $this->hasRepository = in_array('repository', $request->input('to_create_files'));
+
+        // enums
+        $this->setEnums($this->fields);
+
     }
 
     /**
      * 通过配置来的 model 进行简单变形
-     * @param string $type plural | camel
+     * @param string $type plural | camel | studly | snake
      * @return string
      */
     public function getModel(string $type): string
@@ -75,13 +91,21 @@ class Config
     }
 
     /**
-     * 强行把 $hasMany 变成数组
-     * @param  $hasMany
+     * studly String
+     * @return string
      */
-    private function setHasMany(array|string $hasMany): void
+    public function getModule(): string
     {
-        $hasMany = is_array($hasMany) ? $hasMany : [$hasMany];
-        $this->hasManyRelations = $hasMany;
+       return Str::studly($this->module);
+    }
+
+    /**
+     * 强行把 $hasMany 变成数组
+     * @param string | array $has_many
+     */
+    private function setHasMany($has_many): void
+    {
+        $this->hasManyRelations = is_array($has_many) ? $has_many : [$has_many];
     }
 
 
@@ -99,4 +123,16 @@ class Config
 
         $this->fields = $fields;
     }
+
+    private function setEnums(array $fields): void
+    {
+        $enums = [];
+        foreach($fields as $field) {
+            if ($field['enum']['fileName'] && count($field['enum']['list']) > 0 ) {
+                $enums[] = $field['enum'];
+            }
+        }
+        $this->enums = $enums;
+    }
 }
+

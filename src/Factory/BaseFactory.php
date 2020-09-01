@@ -123,7 +123,7 @@ class BaseFactory {
         $content = '';
         $stub = $stub ? $stub : $this->stub;
         if (isset($stub)) {
-            $content = file_get_contents(__DIR__. '/../stubs/'.$stub);
+            $content = file_get_contents(__DIR__ . '/../stubs/' .$stub);
             if ($content === false)
             {
                 throw new GenerateException('stub: '. $stub . '不存在');

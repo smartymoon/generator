@@ -2,44 +2,49 @@
 
 namespace Smartymoon\Generator\Factory\Resource;
 
+/**
+ * Trait ResourceFactoryTrait
+ * @package Smartymoon\Generator\Factory\Resource
+ */
 Trait ResourceFactoryTrait
 {
 
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
+        $content = str_replace(
+            'DummyNamespace',
+            $this->dealModuleNamespace('App\Http\Resources') . '\\'. $this->getModelClass(),
+            $this->getStub($this->stubFile)
+        );
+
         $content = str_replace('DummyClass', $this->getFileName(), $content);
         $content = str_replace('DummyFields', $this->getFields(), $content);
 
         return $content;
     }
 
-
-    private function getFields()
+    private function getFields(): string
     {
-        $upperObj = $this->stub === 'resource/resource.stub' ? '$this' : '$item';
-        $content = "'id' => " . $upperObj .'->id,' . "\n";
+        $upper_obj = $this->stubFile === 'resource/resource.stub' ? '$this' : '$item';
+        $content = "'id' => " . $upper_obj .'->id,' . "\n";
 
-
-        foreach($this->fields as $field) {
-            $content .= $this->tab($this->field_tabs);
+        foreach($this->config->fields as $field) {
+            $content .= $this->tab($this->fieldTabs);
             $field_name = $field['field_name'];
 
             if ($field['belongsTo']) {
                 $relation = substr($field_name, 0, -3);
-                $content .= "'$relation' => " . $upperObj .'->' . "$relation,\n";
+                $content .= "'$relation' => " . $upper_obj .'->' . "$relation,\n";
             } else {
-                $content .= "'$field_name' => " . $upperObj .'->' . "$field_name,\n";
+                $content .= "'$field_name' => " . $upper_obj .'->' . "$field_name,\n";
             }
         }
 
         // hasMany
-        foreach($this->hasMany as $hasMany) {
-            $hasMany_name_key = $this->tableName($hasMany);
-            $hasMany_name = $this->hasManyRelation($hasMany);
-            $content .= $this->tab($this->field_tabs)."'$hasMany_name_key' => " . $upperObj .'->' . "$hasMany_name,\n";
+        foreach($this->hasMany as $has_many) {
+            $has_many_key = $this->tableName($has_many);
+            $has_many_name = $this->hasManyRelation($has_many);
+            $content .= $this->tab($this->fieldTabs)."'$has_many_key' => " . $upper_obj .'->' . "$has_many_name,\n";
         }
 
         return $content;

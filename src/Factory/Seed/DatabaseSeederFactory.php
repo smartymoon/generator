@@ -3,36 +3,33 @@
 
 namespace Smartymoon\Generator\Factory\Seed;
 
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class DatabaseSeederFactory extends BaseFactory
+/**
+ * Class DatabaseSeederFactory
+ * @package Smartymoon\Generator\Factory\Seed
+ */
+class DatabaseSeederFactory extends MakeFactory implements FactoryContract
 {
 
-    protected $buildType = 'patch';
-    protected $stub = '';
-    protected $path = 'database/seeds/DatabaseSeeder.php';
+    protected string $path;
 
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-
-        $content = str_replace('//DummySeeder', $this->injectSeeder(), $content);
-
-        return $content;
+        $this->path = base_path('database/seeds/DatabaseSeeder.php');
+        return str_replace('//DummySeeder', $this->injectSeeder(), $this->getRealFile($this->path));
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel . 'Seeder';
+        return $this->path;
     }
 
-    private function injectSeeder()
+    private function injectSeeder(): string
     {
-        // $this->call(SubjectSeeder::class);
-        return '$this->call('.$this->ucModel.'Seeder::class);'."\n".
+        return '$this->call('.$this->getModelClass().'Seeder::class);'."\n".
                $this->tab(2).'//DummySeeder';
-
     }
+
 }

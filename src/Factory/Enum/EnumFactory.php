@@ -8,8 +8,6 @@ use Smartymoon\Generator\Factory\BaseFactory;
 
 class EnumFactory extends BaseFactory
 {
-
-    protected $buildType = 'new';
     protected $stub = 'enum/Enum.stub';
     protected $path = 'app/Enums/';
 
@@ -19,8 +17,8 @@ class EnumFactory extends BaseFactory
 
     public function __construct($config, $enum)
     {
-       $this->fileName = $enum['fileName']; 
-       $this->enums = $enum['list']; 
+       $this->fileName = $enum['fileName'];
+       $this->enums = $enum['list'];
        parent::__construct($config);
     }
 

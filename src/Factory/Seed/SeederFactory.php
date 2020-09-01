@@ -5,34 +5,27 @@ namespace Smartymoon\Generator\Factory\Seed;
 
 use Illuminate\Support\Facades\Artisan;
 use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class SeederFactory extends BaseFactory
+/**
+ * Class SeederFactory
+ * @package Smartymoon\Generator\Factory\Seed
+ */
+class SeederFactory extends MakeFactory implements FactoryContract
 {
+    protected string $stubFile = 'seeder/seeder.stub';
 
-    protected $buildType = 'new';
-    protected $stub = 'seeder/seeder.stub';
-    protected $path = 'database/seeds/';
-
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-        $content = str_replace('DummyClass', $this->getFileName(), $content);
-        $content = str_replace('DummySeedTimes', $this->seed_times, $content);
+        $content = str_replace('DummyClass', $this->getModelClass().'Seeder', $this->getStub($this->stubFile));
+        $content = str_replace('DummySeedTimes', $this->config->seedTimes, $content);
 
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel . 'Seeder';
-    }
-
-    protected function afterGenerate()
-    {
-        exec('cd '. base_path() .  '&& composer dump-autoload');
-        // sleep(15);
-        exec('cd '. base_path() . '&& php artisan db:seed --class '. $this->getFileName());
+        return $this->dealModulePath(base_path('database/seeds/')).$this->getModelClass().'Seeder.php';
     }
 }

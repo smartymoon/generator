@@ -42,12 +42,8 @@
 
 
                 <el-form-item label="生成文件">
-                    <el-checkbox-group v-model="config.may_create_files">
-                        <div>
-                            <el-checkbox label="resource"></el-checkbox>
+                    <el-checkbox-group v-model="config.to_create_files">
                             <el-checkbox label="repository"></el-checkbox>
-                        </div>
-                        <div>
                             <el-checkbox label="controller"></el-checkbox>
                             <el-checkbox label="request"></el-checkbox>
                         </div>
@@ -237,7 +233,7 @@
                     </div>
                     <div class="flex">
                         <div class="w-1/2 border-r">
-                            <h4> 
+                            <h4>
                                 <span class="align-middle">验证</span>
                                 <el-button size="mini" class="ml-2" @click="addRule(field.rules)">加规则</el-button>
                             </h4>
@@ -314,7 +310,7 @@
                     hasMany: [],
                     controller_namespace: 'Wap',
                     seed_times: 10,
-                    may_create_files: ['resource', 'repository'],
+                    to_create_files: ['resource', 'repository'],
                     fields: [_.cloneDeep(field_template)]
                 }
             },
@@ -338,7 +334,7 @@
                         }
                     }).catch(err => {
                         const info = err.response.data
-                        this.showResult('error', 
+                        this.showResult('error',
 `${info.exception}
 ${info.file}
 ${info.line} 行

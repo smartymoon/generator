@@ -2,63 +2,54 @@
 
 namespace Smartymoon\Generator\Factory\Model;
 
-use Smartymoon\Generator\Factory\BaseFactory;
 
-class RepositoryFactory extends BaseFactory
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
+
+/**
+ * Class RepositoryFactory
+ * @package Smartymoon\Generator\Factory\Model
+ */
+class RepositoryFactory extends MakeFactory implements FactoryContract
 {
-
-    protected $buildType = 'new';
-    protected $stub = 'repository/repository.stub';
-    protected $path = 'app/Repositories/';
-    protected $baseRepositoryRealPath = 'app/Repositories/BaseRepository.php';
-    protected $baseRepositoryStubPath = 'repository/BaseRepository.stub';
+    protected string $stubFile = 'repository/repository.stub';
 
     /**
      * @inheritDoc
      */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-        $this->makeBaseRepository();
-
-        $content = str_replace('DummyFields', $this->getFields(), $content);
+        $content = str_replace('DummyFields', $this->getFields(), $this->getStub($this->stubFile));
         $content = str_replace('DummyHas', $this->getHasMany(), $content);
 
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel . 'Repository';
+        return $this->dealModulePath(base_path('app/Repositories')). $this->getModelClass() . 'Repository.php';
     }
 
-    private function makeBaseRepository()
-    {
-        $absoluteRealPath = base_path($this->baseRepositoryRealPath);
-        if(!file_exists($absoluteRealPath)) {
-            $source = __DIR__ . '/../../stubs/'. $this->baseRepositoryStubPath;
-            copy($source ,$absoluteRealPath);
-        }
-    }
-
-    private function getFields()
+    private function getFields(): string
     {
         $content = "";
-        foreach ($this->fields as $field) {
+        foreach ($this->config->fields as $field) {
             $field_name = $field['field_name'];
             $content .= "'$field_name', ";
         }
         return $content;
     }
 
-    private function getHasMany() 
+    private function getHasMany(): string
     {
-        if (count($this->hasMany) == 0) return '';
+        if (count($this->config->hasManyRelations) == 0) return '';
 
         $content = '['."\n";
-        foreach($this->hasMany as $hasMany) {
-           $name = $this->hasManyRelation($hasMany);
+        foreach($this->config->hasManyRelations as $has_many) {
+           $name = $this->hasManyMethodName($has_many);
            $content .=  $this->tab(3) . "'${name}', ". "\n";
         }
         return $content . $this->tab(2) . ']';
     }
+
 }

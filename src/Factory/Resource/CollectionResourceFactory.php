@@ -2,19 +2,29 @@
 
 namespace Smartymoon\Generator\Factory\Resource;
 
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class CollectionResourceFactory extends BaseFactory
+/**
+ * Class CollectionResourceFactory
+ * @package Smartymoon\Generator\Factory\Resource
+ */
+class CollectionResourceFactory extends MakeFactory implements FactoryContract
 {
     use ResourceFactoryTrait;
 
-    protected $buildType = 'new';
-    protected $stub = 'resource/collectionResource.stub';
-    protected $path = 'app/Http/resources/';
-    protected $field_tabs = 4;
+    protected string $stubFile = 'resource/collectionResource.stub';
+    protected int $fieldTabs = 4;
 
-    protected function getFileName()
+    protected function getFileName(): string
     {
-        return $this->ucModel . 'CollectionResource';
+        return $this->getModelClass() . 'CollectionResource';
+    }
+
+    public function getFilePath(): string
+    {
+        return  $this->dealModulePath(base_path('app/Http/resources/'))
+            . $this->getModelClass()
+            . '/' . $this->getFileName() . 'php';
     }
 }

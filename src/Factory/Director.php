@@ -17,13 +17,14 @@ use Smartymoon\Generator\Factory\Seed\FactoryFactory;
 use Smartymoon\Generator\Factory\Seed\SeederFactory;
 use Smartymoon\Generator\GenerateLog;
 
+/**
+ * 处理各种工厂
+ * Class Director
+ * @package Smartymoon\Generator\Factory
+ */
 class Director
 {
-
-    private $config;
-
-    // 注册需要 make Factory
-    public $factories = [
+    public static array $factories = [
          'model' => ModelFactory::class,
          'migration' => MigrationFactory::class,
          'factory' => FactoryFactory::class,
@@ -37,32 +38,34 @@ class Director
     ];
 
     /**
-     * @var array
+     * 制作文件入口
+     * @param $to_create_files
+     * @return false|int
      */
-    private $to_create_files;
-
-    public function __construct($config)
+    public static function launch($to_create_files)
     {
-        $this->config = $config;
-        $this->to_create_files = $config['to_create_files'];
-        $this->enums = $config['enums'];
-    }
+        // todo 用 laravel 容器，避免重复 new Config
 
-    public function launch()
-    {
-        // 传统文件
-        foreach($this->factories as $key => $Factory) {
-            if (in_array($key, $this->to_create_files)) {
-                GenerateLog::record('making ' . $key);
-                (new $Factory($this->config))->generateFile();
-            }
+        if (in_array('repository', $to_create_files)) {
+            $to_create_files[] = 'resource';
+            $to_create_files[] = 'collectionResource';
         }
 
-        // enum 文件
-        foreach($this->enums as $enum) {
-            GenerateLog::record('making enum ' . $enum['fileName']); 
-            (new EnumFactory($this->config, $enum))->generateFile();
-            (new EnumLangFactory($this->config, $enum))->generateFile();
+        $to_create_files = array_merge($to_create_files, [
+            'model', 'migration', 'factory', 'seeder', 'databaseSeeder'
+        ]);
+
+        foreach ($to_create_files as $file_key) {
+            $factory = new self::$factories[$file_key]();
+
+            $content = $factory->buildContent();
+            $file_path = $factory->getFilePath();
+
+            return file_put_contents($file_path, $content);
         }
+
+        $enum_director = new EnumDirector(Config::class);
+        $enum_director->launch();
+
     }
 }

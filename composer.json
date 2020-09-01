@@ -3,8 +3,8 @@
     "description": "Generate files to save time",
     "license": "MIT",
     "require": {
-	    "orangehill/iseed": "^2.6",
-	    "bensampo/laravel-enum": "^1.32"
+	    "../../../vendor/orangehill/iseed": "^2.6",
+	    "../../../vendor/bensampo/laravel-enum": "^1.32"
     },
     "authors": [
         {

@@ -3,42 +3,40 @@
 
 namespace Smartymoon\Generator\Factory\Request;
 
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-use Smartymoon\Generator\Factory\BaseFactory;
-
-class RequestFactory extends BaseFactory
+/**
+ * Class RequestFactory
+ * @package Smartymoon\Generator\Factory\Request
+ */
+class RequestFactory extends MakeFactory implements FactoryContract
 {
+    protected string $stubFile = 'request/request.stub';
 
-    protected $buildType = 'new';
-    protected $stub = 'request/request.stub';
-    protected $path = 'app/Http/Requests/';
+    private string $dummyRules;
+    private string $dummyMessages;
 
-    private $DummyRules = '';
-    private $DummyMessages = '';
-
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
         $this->makeRulesAndMessage();
 
-        $content = str_replace('DummyRules', $this->DummyRules, $content);
-        $content = str_replace('DummyMessages', $this->DummyMessages, $content);
+        $content = str_replace('dummyRules', $this->dummyRules, $this->getStub($this->stubFile));
+        $content = str_replace('dummyMessages', $this->dummyMessages, $content);
 
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->ucModel . 'Request';
+       return $this->dealModulePath(base_path('app/Http/Requests/')) .$this->getModelClass() . 'Request.php' ;
     }
 
     private function makeRulesAndMessage()
     {
         $rules_content = "";
         $messages_content = "";
-        foreach($this->fields as $field) {
+        foreach($this->config->fields as $field) {
             $field_name = $field['field_name'];
             if (!isset($field['rules'])) {
                 continue;
@@ -58,12 +56,12 @@ class RequestFactory extends BaseFactory
             $rules_content .= $this->tab(3) . "'$field_name' => "
                 . "[\n". $this->tab(4). "$final_rules\n". $this->tab(3) ."],\n";
         }
-        $this->DummyRules = $rules_content;
-        $this->DummyMessages = $messages_content;
+        $this->dummyRules = $rules_content;
+        $this->dummyMessages = $messages_content;
     }
 
 
-    private function makeUnique($field_name)
+    private function makeUnique(string $field_name): string
     {
         return "'unique:".$this->tableName().",$field_name'.".
             ' $this->method == \'POST\' ? "" : ",\'".request()->id,';

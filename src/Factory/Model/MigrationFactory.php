@@ -2,64 +2,57 @@
 namespace Smartymoon\Generator\Factory\Model;
 
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Smartymoon\Generator\Exceptions\GenerateException;
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class MigrationFactory extends BaseFactory
+/**
+ * Class MigrationFactory
+ * @package Smartymoon\Generator\Factory\Model
+ */
+class MigrationFactory extends MakeFactory implements FactoryContract
 {
     /*
      * 可选 new,  replace
      * new: 制做新的文件
      * replace:
      */
-    protected $buildType = 'new';
-    protected $stub = 'migration/migration.stub';
-    protected $path = 'database/migrations/';
-    protected $right_methods = [];
+    protected string $stubFile = 'migration/migration.stub';
+    protected array $rightMethods = [];
 
+    protected string $migrationFold;
 
-    /**
-     * @inheritDoc
-     */
-    // 1, 简单词替换 (无模板)
-    // 2. 块替换, migrations, Factory, validation(todo) (无模板)
-    // 3. 函数模板 (有模板)
-    // 4. 给已有文件打补丁 
-    /*
-     * @return string $content
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-        $content = str_replace('DummyClass', $this->getClass(), $content);
-        $content = str_replace('DummyTable', $this->tableName($this->model), $content);
+        $this->migrationFold = base_path('database/migrations/');
+
+        foreach (scandir($this->migrationFold) as $file) {
+            if (Str::contains($file, '_create_'.$this->tableName().'_table')) {
+                unlink($this->migrationFold . $file);
+                // $this->commander->info('删除 migration :'. $file);
+            }
+        }
+
+        $content = str_replace(
+            'DummyClass',
+            'Create'. \Str::plural($this->getModelClass()). 'Table',
+            $this->getStub($this->stubFile)
+        );
+        $content = str_replace('DummyTable', $this->tableName(), $content);
         $content = str_replace('DummyColumns', $this->makeColumns(), $content);
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->getDatePrefix().'_create_'.$this->tableName($this->model).'_table';
+        return $this->migrationFold . date('Y_m_d_His') .'_create_'.$this->tableName().'_table.php';
     }
 
-    protected function getClass()
+    private function makeColumns(): string
     {
-        return 'Create'. Str::plural($this->ucModel). 'Table';
-    }
-
-
-    private function getDatePrefix()
-    {
-        return date('Y_m_d_His');
-    }
-
-    private function makeColumns()
-    {
-        //    $table->timestamp('failed_at')->useCurrent();
         $content = "\n";
-        foreach($this->fields as $field) {
-
+        foreach($this->config->fields as $field) {
             if ($field['foreign_policy']) {
                 $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
                 $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
@@ -74,26 +67,7 @@ class MigrationFactory extends BaseFactory
         return $content;
     }
 
-    protected function afterGenerate()
-    {
-        Artisan::call('migrate');
-    }
-
-    protected function beforeGenerate()
-    {
-        // clear migration files
-        foreach (scandir($this->realPath) as $file) {
-           if (Str::contains($file, '_create_'.$this->tableName($this->model).'_table')) {
-                unlink($this->realPath . $file);
-                $this->commander->info('删除 migration :'. $file);
-           }
-        }
-    }
-
-    /** 
-    * todo 这里的 nullable 有什么用
-    */
-    public function makeForeign($field_name, $foreign_policy, $foreign_table = '')
+    private function makeForeign(string $field_name, string $foreign_policy, string $foreign_table = ''): string
     {
         if (!$foreign_policy) {
             return '';
@@ -111,32 +85,31 @@ class MigrationFactory extends BaseFactory
             $foreign .= "->onDelete('cascade')";
         }
 
-        return $foreign .= ';';
-
+        return  $foreign . ';';
     }
 
-    public function makeMigrate($field_name, $migrate)
+    private function makeMigrate(string $field_name, string $migrate): string
     {
         $this->checkMigrateMethod($field_name, $migrate);
-        return $pos = strpos($migrate, '(') ? $migrate : $migrate . '()'; 
+        return $position = strpos($migrate, '(') ? $migrate : $migrate . '()';
     }
 
-    public function checkMigrateMethod(String $name, String $method)
+    private function checkMigrateMethod(String $name, String $method): void
     {
-        $pos = strpos($method, '(');
-        $toCheck = $pos === false ? $method : 
-            substr($method, 0, $pos);
+        $position = strpos($method, '(');
+        $to_check = $position === false ? $method :
+            substr($method, 0, $position);
 
-        if(!in_array($toCheck, $this->getRightMethodList())) {
-            throw new GenerateException('表字段'. $name . '的类型 '. $toCheck. ' 不存在');
+        if(!in_array($to_check, $this->getRightMethodList())) {
+            throw new GenerateException('表字段'. $name . '的类型 '. $to_check. ' 不存在');
         }
     }
 
-    public function getRightMethodList()
+    private function getRightMethodList(): array
     {
 
-        if (count($this->right_methods) == 0) {
-            $this->right_methods = array_merge(get_class_methods(Blueprint::class), [
+        if (count($this->rightMethods) == 0) {
+            $this->rightMethods = array_merge(get_class_methods(Blueprint::class), [
                 'after',
                 'always',
                 'autoIncrement',
@@ -159,18 +132,18 @@ class MigrationFactory extends BaseFactory
                 'persisted',
             ]);
         }
-        return $this->right_methods;
+        return $this->rightMethods;
     }
 
-    public function makeFieldType($field_name, $field_config_type)
+    private function makeFieldType(string $field_name, string $field_config_type): string
     {
-        // type 可能 abc() , abc
         $this->checkMigrateMethod($field_name, $field_config_type);
-        $pos = strpos($field_config_type, '(');
-        if ($pos === false) {
+        $position = strpos($field_config_type, '(');
+        if ($position === false) {
             return $field_config_type . '(\''. $field_name . '\')';
         } else {
             return str_replace('(', '(\''. $field_name .'\', ', $field_config_type);
         }
     }
+
 }
