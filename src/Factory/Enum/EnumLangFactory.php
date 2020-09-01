@@ -4,51 +4,41 @@
 namespace Smartymoon\Generator\Factory\Enum;
 
 
-use Smartymoon\Generator\Factory\BaseFactory;
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-class EnumLangFactory extends BaseFactory
+class EnumLangFactory extends MakeFactory implements FactoryContract
 {
-
-    protected $buildType = 'patch';
-    protected $stub = '';
-    protected $path = 'resources/lang/zh-CN/enums.php';
+    protected $stubFile = 'resources/lang/zh-CN/enums.php';
 
     protected $fileName;
     protected $enums;
 
-
-    public function __construct($config, $enum)
+    public function initEnum(array $enum): string
     {
-       $this->fileName = $enum['fileName']; 
-       $this->enums = $enum['list']; 
-       parent::__construct($config);
+        $this->fileName = $enum['fileName'];
+        $this->enums = $enum['list'];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-
-        $content = str_replace('//DummyBlock', $this->makeConst(), $content);
-        return $content;
+        return str_replace('//DummyBlock', $this->makeConst(), $this->getStub($this->stubFile));
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->fileName;
+        return base_path($this->stubFile);
     }
 
-    public function makeConst()
+    public function makeConst(): string
     {
 
         // DemandStatus::class => [
-        //    DemandStatus::todo =>  '未处理',
+        //    DemandStatus::todo =>  '未处理',
         //    DemandStatus::doing =>  '处理中',
         //    DemandStatus::done =>  '完成',
         // ],
 
-        //todo
         $class = 'App\Enums\\' .$this->fileName;
         $content = $this->tab(1) . $class . '::class => [' . "\n";
         foreach($this->enums as $enum) {

@@ -102,7 +102,7 @@ class BaseFactory {
 
        // common replace Model Namespace , Model
        return str_replace(
-           ['DummyModelNamespace', 'DummyModel', 'DummyLModel'],
+           ['DummyUseModel', 'DummyModel', 'DummyVariableModel'],
            [$this->modelNamespace, $this->ucModel, $this->lcModel],
            $content
        );

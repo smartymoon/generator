@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 DummyShowBaseController
-use DummyModelNamespace;
+use DummyUseModel;
 use Illuminate\Http\Request;
 use App\Http\Resources\DummyModelResource;
 
@@ -23,11 +23,11 @@ class DummyClass extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\DummyModel  $DummyLModel
+     * @param  \App\Models\DummyModel  $DummyVariableModel
      * @return \Illuminate\Http\Response
      */
-    public function show(DummyModel $DummyLModel)
+    public function show(DummyModel $DummyVariableModel)
     {
-        return new DummyModelResource($DummyLModel);
+        return new DummyModelResource($DummyVariableModel);
     }
 }

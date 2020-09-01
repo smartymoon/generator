@@ -12,11 +12,13 @@ use Smartymoon\Generator\Factory\MakeFactory;
  */
 class FactoryFactory extends MakeFactory implements FactoryContract
 {
-    protected string $stubFile = 'Factory/Factory.stub';
+    protected string $stubFile = 'factory/factory.stub';
 
     public function buildContent(): string
     {
-        return str_replace('DummyFakers', $this->makeFakers(), $this->getStub($this->stubFile));
+        $content =  str_replace('DummyFakers', $this->makeFakers(), $this->getStub($this->stubFile));
+        $content = $this->modelReplaces($content);
+        return $content;
     }
 
     public function getFilePath(): string

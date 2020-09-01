@@ -1,0 +1,4 @@
+
+Route::get('DummyURI', 'DummyModelController@index');
+Route::get('DummyURI/{DummyVariableModel}', 'DummyModelController@show');
+//DummyRoute

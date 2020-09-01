@@ -3,50 +3,42 @@
 
 namespace Smartymoon\Generator\Factory\Enum;
 
+use Smartymoon\Generator\Factory\FactoryContract;
+use Smartymoon\Generator\Factory\MakeFactory;
 
-use Smartymoon\Generator\Factory\BaseFactory;
-
-class EnumFactory extends BaseFactory
+class EnumFactory extends MakeFactory implements FactoryContract
 {
-    protected $stub = 'enum/Enum.stub';
+    protected $stubFile = 'enum/Enum.stub';
     protected $path = 'app/Enums/';
 
     protected $fileName;
     protected $enums;
 
-
-    public function __construct($config, $enum)
+    public function initEnum(array $enum): string
     {
-       $this->fileName = $enum['fileName'];
-       $this->enums = $enum['list'];
-       parent::__construct($config);
+        $this->fileName = $enum['fileName'];
+        $this->enums = $enum['list'];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function buildContent($content)
+    public function buildContent(): string
     {
-
-        $content = str_replace('DummyClass', $this->fileName, $content);
+        $content = str_replace('DummyClass', $this->fileName, $this->getStub($this->stubFile));
         $content = str_replace('DummyConst', $this->makeConst(), $content);
 
         return $content;
     }
 
-    protected function getFileName()
+    public function getFilePath(): string
     {
-        return $this->fileName;
+        return base_path($this->path) . $this->fileName . '.php';
     }
 
-    public function makeConst()
+    public function makeConst(): string
     {
         //const ToSale =   0;
         //const QiFang =   1;
         //const XianFang = 2;
         //const WeiPan = 4;
-
-        //todo
         $content = '';
         foreach($this->enums as $key => $enum) {
             $content .= $this->tab(1) . 'const ' . $enum['english'] . ' = ' . ($key + 1) . ';' . "\n";

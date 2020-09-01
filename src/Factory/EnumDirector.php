@@ -3,6 +3,8 @@ namespace Smartymoon\Generator\Factory;
 
 
 use Smartymoon\Generator\Config;
+use Smartymoon\Generator\Factory\Enum\EnumFactory;
+use Smartymoon\Generator\Factory\Enum\EnumLangFactory;
 
 /**
  * Class EnumDirector
@@ -24,9 +26,19 @@ class EnumDirector
     {
         // enum 文件
         // 从前端把 enums 提取出来
-        foreach($this->enums as $enum) {
-            (new EnumFactory($this->config, $enum))->generateFile();
-            (new EnumLangFactory($this->config, $enum))->generateFile();
+        foreach($this->config->enums as $enum) {
+            $enum_factory = app(EnumFactory::class);
+            $enum_lang = app(EnumLangFactory::class);
+
+            $enum_factory->initEnum($enum);
+            $enum_content = $enum_factory->buildContent();
+            $enum_path = $enum_factory->getFilePath();
+            file_put_contents($enum_path, $enum_content);
+
+            $enum_lang->initEnum($enum);
+            $enum_lang_content = $enum_lang->buildContent();
+            $enum_lang_path = $enum_lang->getFilePath();
+            file_put_contents($enum_lang_path, $enum_lang_content);
         }
     }
 }

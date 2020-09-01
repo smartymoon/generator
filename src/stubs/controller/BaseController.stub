@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
+
+class Controller extends Controller
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function success($message = '操作成功', $data = [])
+    {
+        return response([
+            'code' => 201,
+            'message' => $message,
+            'data' => $data
+        ]);
+    }
+
+    public function fail($message = '操作失败', $data = [])
+    {
+        return response([
+            'code' => 204,
+            'message' => $message,
+            'data' => $data
+        ]);
+    }
+}

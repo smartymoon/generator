@@ -8,12 +8,17 @@ use Illuminate\Support\Str;
 use Smartymoon\Generator\Config;
 use Smartymoon\Generator\Exceptions\GenerateException;
 use Smartymoon\Generator\Factory\Director;
+use Smartymoon\Generator\Factory\Seed\SeederFactory;
 use Smartymoon\Generator\Manager;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        // 检查一下，如果没有 BaseController，提示先 php artisan generator:init
+        if (!file_exists(base_path('app/Http/Controllers/BaseController.php'))) {
+            return '还没有初始化，请先运行 php artisan sm:init';
+        }
         return view('generator::index');
     }
 
@@ -47,19 +52,17 @@ class HomeController extends Controller
             'message' => ''
         ];
 
-
         try {
             Director::launch($request->input('to_create_files'));
+
+            Artisan::call('migrate');
+            exec('cd '. base_path() .  '&& composer dump-autoload');
+            exec('cd '. base_path() . '&& php artisan db:seed --class '. app(SeederFactory::class)->getClassName());
+
         } catch(GenerateException $exception) {
             $result['code'] = 204;
             $result['message'] = $exception->getMessage() ?: '发生错误';
         }
-
-        // 3. dump migrate seed
-        Artisan::call('migrate');
-        exec('cd '. base_path() .  '&& composer dump-autoload');
-        // sleep(15);
-        exec('cd '. base_path() . '&& php artisan db:seed --class '. $this->getFileName());
 
 
         // 4. make base file baseRepository and BaseController
@@ -77,5 +80,15 @@ class HomeController extends Controller
     {
         $table = Str::plural(Str::snake(request()->input('table')));
         \DB::statement('drop table ' . $table);
+    }
+
+    public function modules()
+    {
+        $dirs = array_map(function($item) {
+            return \Str::afterLast($item, '/');
+        },
+        glob(base_path('app/Http/Controllers/*'), GLOB_ONLYDIR)
+        );
+        return $dirs;
     }
 }

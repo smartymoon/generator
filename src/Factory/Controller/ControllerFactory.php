@@ -33,6 +33,7 @@ class ControllerFactory extends MakeFactory implements FactoryContract
         );
 
         $content = str_replace('DummyClass', $this->getModelClass() . 'Controller', $content);
+        $content = $this->modelReplaces($content);
         return $content;
     }
 

@@ -39,6 +39,14 @@ class MakeFactory
        return \Str::studly($name);
     }
 
+    protected function getModelVariable(string $name = null): string
+    {
+        if (is_null($name)) {
+            $name = $this->config->getModel('camel');
+        }
+        return \Str::camel($name);
+    }
+
     /**
      * return path finish with '/'
      * @param string $path
@@ -81,5 +89,23 @@ class MakeFactory
             return $namespace;
         }
         return $namespace . '\\' . $module;
+    }
+
+    /**
+     * 和 Model 相关的一些常见的替换
+     * @param string $content
+     * @return string
+     */
+    protected function modelReplaces(string $content): string
+    {
+        return str_replace(
+            ['DummyUseModel', 'DummyModel', 'DummyVariableModel'],
+            [
+                $this->dealModuleNamespace('App\Models') . '\\' . $this->getModelClass(),
+                $this->getModelClass(),
+                $this->getModelVariable()
+            ],
+            $content
+        );
     }
 }

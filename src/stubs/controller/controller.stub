@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 DummyShowBaseController
-use DummyModelNamespace;
+use DummyUseModel;
 use Illuminate\Http\Request;
 use App\Http\Resources\DummyModelResource;
 use App\Http\Resources\DummyModelCollectionResource;
@@ -11,21 +11,21 @@ use App\Repositories\DummyModelRepository;
 
 class DummyClass extends Controller
 {
-    protected $DummyLModelRepository;
+    protected $DummyVariableModelRepository;
 
-    public function __construct(DummyModelRepository $DummyLModelRepository)
+    public function __construct(DummyModelRepository $DummyVariableModelRepository)
     {
-        $this->DummyLModelRepository = $DummyLModelRepository;
+        $this->DummyVariableModelRepository = $DummyVariableModelRepository;
     }
-    
+
     public function index(Request $request)
     {
-        $list = $this->DummyLModelRepository->getList($request);
+        $list = $this->DummyVariableModelRepository->getList($request);
         return new DummyModelCollectionResource($list);
     }
 
-    public function show(DummyModel $DummyLModel)
+    public function show(DummyModel $DummyVariableModel)
     {
-        return new DummyModelResource($DummyLModel);
+        return new DummyModelResource($DummyVariableModel);
     }
 }

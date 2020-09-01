@@ -22,31 +22,29 @@
 
         <div class="w-1/4 h-full">
             <el-form ref="form" :model="config" label-position="top" size="small">
-                <el-form-item label="模型名" class="w-3/5">
+                <el-form-item label="模型名" class="w-4/5">
                     <el-input v-model="config.model" placeholder="首字母大写">
                 </el-form-item>
 
-                <el-form-item label="hasMany(写 Model 名)" class="w-3/5">
-                    <el-select v-model="config.hasMany" multiple allow-create filterable default-first-option placeholder="可写多个"></el-select>
+                <el-form-item label="hasMany(写 Model 名)" class="w-4/5">
+                    <el-select v-model="config.hasMany" multiple allow-create filterable default-first-option placeholder="可写多个" class="block"></el-select>
                 </el-form-item>
 
-                <el-form-item label="Controller Namespace" class="w-3/5">
-                    <el-select v-model="config.controller_namespace" filterable  allow-create default-first-option clearable>
-                        <el-option value="Wap" default>Wap</el-option>
+                <el-form-item label="模块名" class="w-4/5">
+                    <el-select v-model="config.module" filterable  allow-create default-first-option clearable class="block">
+                        <el-option v-for="(item, key) in modules" :key="key" :label="item" :value="item" default ></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="Seed Times" class="w-3/5">
+                <el-form-item label="Seed Times" class="w-4/5">
                     <el-input-number v-model="config.seed_times" :step="20"></el-input-number>
                 </el-form-item>
 
 
                 <el-form-item label="生成文件">
                     <el-checkbox-group v-model="config.to_create_files">
-                            <el-checkbox label="repository"></el-checkbox>
-                            <el-checkbox label="controller"></el-checkbox>
-                            <el-checkbox label="request"></el-checkbox>
-                        </div>
+                        <el-checkbox label="repository"></el-checkbox>
+                        <el-checkbox label="request"></el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
 
@@ -302,20 +300,26 @@
         let app = new Vue({
             el: '#app',
             data: {
+                modules: [],
                 loading: false,
                 dialogVisible: false,
                 response: '',
                 config: {
                     model: '',
                     hasMany: [],
-                    controller_namespace: 'Wap',
+                    module: '',
                     seed_times: 10,
-                    to_create_files: ['resource', 'repository'],
+                    to_create_files: ['repository'],
                     fields: [_.cloneDeep(field_template)]
                 }
             },
             methods: {
                 // type: success or error
+                getModules() {
+                    axios.get('/lee/modules').then(({data}) => {
+                        this.modules = data
+                    })
+                },
                 showResult(type, content) {
                     this.$alert(content, '结果', {
                         type: type,
@@ -391,9 +395,10 @@ ${info.message}`
                 }
             },
             mounted() {
-                $data = this.getConfigFromBrowser()
-                if ($data) {
-                    this.config = $data
+                this.getModules()
+                let data = this.getConfigFromBrowser()
+                if (data) {
+                    this.config = data
                 }
             },
             watch: {

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use DummyModelNamespace;
+use DummyUseModel;
 use Illuminate\Http\Request;
 
 class DummyModelRepository extends  BaseRepository
@@ -10,12 +10,12 @@ class DummyModelRepository extends  BaseRepository
     /**
      * @inheritDoc
      */
-    public function model() 
+    public function model()
     {
         return DummyModel::class;
     }
 
-    public function getList(Request $request) 
+    public function getList(Request $request)
     {
         $query = $this->model->select(['id', DummyFields]);
 
@@ -28,8 +28,8 @@ class DummyModelRepository extends  BaseRepository
         return $this->getPage($query);
     }
 
-    public function getDetail($DummyLModel) 
+    public function getDetail($DummyVariableModel)
     {
-        return $DummyLModel->load(DummyHas);
+        return $DummyVariableModel->load(DummyHas);
     }
 }

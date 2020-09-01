@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Smartymoon\Generator;
+namespace Smartymoon\Generator\Commands;
 
 
 use Illuminate\Console\Command;

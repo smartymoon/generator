@@ -3,6 +3,8 @@
 namespace Smartymoon\Generator;
 
 use Illuminate\Support\ServiceProvider;
+use Smartymoon\Generator\Commands\InitCommand;
+use Smartymoon\Generator\Commands\RollbackCommand;
 
 class GeneratorServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class GeneratorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Config::class);
     }
 
     /**
@@ -27,6 +29,7 @@ class GeneratorServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/views', 'generator');
         if ($this->app->runningInConsole()) {
             $this->commands([
+                InitCommand::class,
                 RollbackCommand::class,
             ]);
         }

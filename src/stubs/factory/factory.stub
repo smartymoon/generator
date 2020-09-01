@@ -1,6 +1,6 @@
 <?php
 
-use DummyModelNamespace;
+use DummyUseModel;
 use Smartymoon\Generator\Faker;
 
 $factory->define(DummyModel::class, function () {
