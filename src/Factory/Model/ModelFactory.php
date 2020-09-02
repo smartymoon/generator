@@ -13,6 +13,7 @@ class ModelFactory extends MakeFactory implements FactoryContract
     public function buildContent(): string
     {
         $content = $this->replaceNamespace('App\Models', 'model/model.stub');
+        $content = $this->modelReplaces($content);
         $content = str_replace('DummyFillable', $this->makeFillable(), $content);
         $content = str_replace('DummyHasMany', $this->makeHasMany(), $content);
         $content = str_replace('DummyBelongsTo', $this->makeBelongsTo(), $content);

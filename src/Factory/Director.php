@@ -3,6 +3,7 @@
 
 namespace Smartymoon\Generator\Factory;
 
+use Smartymoon\Generator\Exceptions\GenerateException;
 use Smartymoon\Generator\Factory\Controller\ControllerFactory;
 use Smartymoon\Generator\Factory\Enum\EnumFactory;
 use Smartymoon\Generator\Factory\Enum\EnumLangFactory;
@@ -61,6 +62,11 @@ class Director
             $content = $factory->buildContent();
             $file_path = $factory->getFilePath();
 
+            // throw new GenerateException($file_path);
+            $file_dir = \Str::beforeLast($file_path, '/');
+            if (!is_dir($file_dir)) {
+                mkdir($file_dir, 0777, true);
+            }
             file_put_contents($file_path, $content);
         }
 

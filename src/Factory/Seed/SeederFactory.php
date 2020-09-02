@@ -32,6 +32,6 @@ class SeederFactory extends MakeFactory implements FactoryContract
 
     public function getFilePath(): string
     {
-        return $this->dealModulePath(base_path('database/seeds/')). $this->getClassName() . 'php';
+        return $this->dealModulePath(base_path('database/seeds/')). $this->getClassName() . '.php';
     }
 }

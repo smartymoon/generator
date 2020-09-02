@@ -67,7 +67,7 @@ class MigrationFactory extends MakeFactory implements FactoryContract
         return $content;
     }
 
-    private function makeForeign(string $field_name, string $foreign_policy, string $foreign_table = ''): string
+    private function makeForeign(string $field_name, string $foreign_policy, string $foreign_table = null): string
     {
         if (!$foreign_policy) {
             return '';

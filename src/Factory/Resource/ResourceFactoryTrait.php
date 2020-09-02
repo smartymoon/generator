@@ -17,6 +17,7 @@ Trait ResourceFactoryTrait
             $this->getStub($this->stubFile)
         );
 
+        $content = $this->modelReplaces($content);
         $content = str_replace('DummyClass', $this->getFileName(), $content);
         $content = str_replace('DummyFields', $this->getFields(), $content);
 
@@ -41,7 +42,7 @@ Trait ResourceFactoryTrait
         }
 
         // hasMany
-        foreach($this->hasMany as $has_many) {
+        foreach($this->config->hasManyRelations as $has_many) {
             $has_many_key = $this->tableName($has_many);
             $has_many_name = $this->hasManyRelation($has_many);
             $content .= $this->tab($this->fieldTabs)."'$has_many_key' => " . $upper_obj .'->' . "$has_many_name,\n";

@@ -25,6 +25,6 @@ class CollectionResourceFactory extends MakeFactory implements FactoryContract
     {
         return  $this->dealModulePath(base_path('app/Http/resources/'))
             . $this->getModelClass()
-            . '/' . $this->getFileName() . 'php';
+            . '/' . $this->getFileName() . '.php';
     }
 }

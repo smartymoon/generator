@@ -65,13 +65,6 @@ class HomeController extends Controller
         }
 
 
-        // 4. make base file baseRepository and BaseController
-        $absoluteRealPath = base_path($this->baseRepositoryRealPath);
-        if(!file_exists($absoluteRealPath)) {
-            $source = __DIR__ . '/../../stubs/' . $this->baseRepositoryStubPath;
-            copy($source ,$absoluteRealPath);
-        }
-
         return $result;
 
     }

@@ -19,7 +19,8 @@ class RepositoryFactory extends MakeFactory implements FactoryContract
      */
     public function buildContent(): string
     {
-        $content = str_replace('DummyFields', $this->getFields(), $this->getStub($this->stubFile));
+        $content = $this->replaceNamespace('App\Repositories', $this->stubFile);
+        $content = str_replace('DummyFields', $this->getFields(), $content);
         $content = $this->modelReplaces($content);
         $content = str_replace('DummyHas', $this->getHasMany(), $content);
 
