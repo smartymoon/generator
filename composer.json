@@ -4,7 +4,7 @@
     "license": "MIT",
     "require": {
 	    "../../../vendor/orangehill/iseed": "^2.6",
-	    "../../../vendor/bensampo/laravel-enum": "^1.32"
+	    "../../../vendor/bensampo/laravel-enum": "^3.0"
     },
     "authors": [
         {
