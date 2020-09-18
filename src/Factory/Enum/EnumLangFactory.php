@@ -7,22 +7,26 @@ namespace Smartymoon\Generator\Factory\Enum;
 use Smartymoon\Generator\Factory\FactoryContract;
 use Smartymoon\Generator\Factory\MakeFactory;
 
+/**
+ * Class EnumLangFactory
+ * @package Smartymoon\Generator\Factory\Enum
+ */
 class EnumLangFactory extends MakeFactory implements FactoryContract
 {
-    protected $stubFile = 'resources/lang/zh-CN/enums.php';
+    protected string $stubFile = 'resources/lang/zh-CN/enums.php';
 
-    protected $fileName;
-    protected $enums;
+    protected string $fileName;
+    protected array $enums;
 
-    public function initEnum(array $enum)
+    public function initEnum(array $enum): void
     {
         $this->fileName = $enum['fileName'];
         $this->enums = $enum['list'];
     }
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
-        return str_replace('//DummyBlock', $this->makeConst(), $this->getStub($this->stubFile));
+        return str_replace('//DummyBlock', $this->makeConst(), $content);
     }
 
     public function getFilePath(): string
@@ -48,4 +52,8 @@ class EnumLangFactory extends MakeFactory implements FactoryContract
         return $content;
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }

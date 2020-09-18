@@ -8,11 +8,11 @@ use Smartymoon\Generator\Factory\MakeFactory;
 
 class EnumFactory extends MakeFactory implements FactoryContract
 {
-    protected $stubFile = 'enum/Enum.stub';
-    protected $path = 'app/Enums/';
+    protected string $stubFile = 'enum/Enum.stub';
+    protected string $path = 'app/Enums/';
 
-    protected $fileName;
-    protected $enums;
+    protected string $fileName;
+    protected array $enums;
 
     public function initEnum(array $enum): string
     {
@@ -20,9 +20,9 @@ class EnumFactory extends MakeFactory implements FactoryContract
         $this->enums = $enum['list'];
     }
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
-        $content = str_replace('DummyClass', $this->fileName, $this->getStub($this->stubFile));
+        $content = str_replace('DummyClass', $this->fileName, $content);
         $content = str_replace('DummyConst', $this->makeConst(), $content);
 
         return $content;
@@ -46,4 +46,8 @@ class EnumFactory extends MakeFactory implements FactoryContract
         return $content;
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }

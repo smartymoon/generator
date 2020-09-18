@@ -10,10 +10,10 @@ use Smartymoon\Generator\Factory\MakeFactory;
  */
 class ModelFactory extends MakeFactory implements FactoryContract
 {
-    public function buildContent(): string
+    protected string $stubFile = 'model/model.stub';
+    public function buildContent(string $content): string
     {
-        $content = $this->replaceNamespace('App\Models', 'model/model.stub');
-        $content = $this->commonReplaces($content);
+        $content = $this->replaceNamespace('App\Models', $content);
         $content = str_replace('DummyFillable', $this->makeFillable(), $content);
         $content = str_replace('DummyHasMany', $this->makeHasMany(), $content);
         $content = str_replace('DummyBelongsTo', $this->makeBelongsTo(), $content);
@@ -69,4 +69,8 @@ class ModelFactory extends MakeFactory implements FactoryContract
         return $content;
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }

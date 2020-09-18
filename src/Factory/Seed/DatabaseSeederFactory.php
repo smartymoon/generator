@@ -15,10 +15,10 @@ class DatabaseSeederFactory extends MakeFactory implements FactoryContract
 
     protected string $path;
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
         $this->path = base_path('database/seeders/DatabaseSeeder.php');
-        return str_replace('//DummySeeder', $this->injectSeeder(), $this->getRealFile($this->path));
+        return str_replace('//DummySeeder', $this->injectSeeder(), $content);
     }
 
     public function getFilePath(): string
@@ -32,4 +32,8 @@ class DatabaseSeederFactory extends MakeFactory implements FactoryContract
                $this->tab(2).'//DummySeeder';
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getRealFile($this->path);
+    }
 }

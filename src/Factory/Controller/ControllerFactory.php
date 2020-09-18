@@ -18,15 +18,8 @@ class ControllerFactory extends MakeFactory implements FactoryContract
 
     public function buildContent(string $content): string
     {
-        $content = str_replace(
-            'DummyNamespace',
-            $this->dealModuleNamespace('App\Http\Controllers'),
-            $content
-        );
-
-        $content = str_replace('DummyRepositoryModuleUse', $this->config->getModule(), $content);
+        $content = $this->replaceNamespace('App\Http\Controllers', $content);
         $content = str_replace('DummyClass', $this->getModelClass() . 'Controller', $content);
-        $content = $this->commonReplaces($content);
         return $content;
     }
 
@@ -39,9 +32,7 @@ class ControllerFactory extends MakeFactory implements FactoryContract
     public function getTemplate(): string
     {
         return $this->getStub(
-                $this->config->hasRepository ?
-                    'controller/controller.stub' : 'controller/simpleController.stub'
+        $this->config->hasRepository ? 'controller/controller.stub' : 'controller/simpleController.stub'
         );
-        
     }
 }

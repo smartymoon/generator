@@ -83,12 +83,12 @@ class MakeFactory
         return Str::finish($module , '\\');
     }
 
-    protected function replaceNamespace(string $base_namespace, string $stub): string
+    protected function replaceNamespace(string $base_namespace, string $content): string
     {
         return str_replace(
             'DummyNamespace',
             $this->dealModuleNamespace($base_namespace),
-            $this->getStub($stub)
+            $content
         );
     }
 

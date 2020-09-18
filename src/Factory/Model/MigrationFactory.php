@@ -23,7 +23,7 @@ class MigrationFactory extends MakeFactory implements FactoryContract
 
     protected string $migrationFold;
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
         $this->migrationFold = base_path('database/migrations/');
 
@@ -37,7 +37,7 @@ class MigrationFactory extends MakeFactory implements FactoryContract
         $content = str_replace(
             'DummyClass',
             'Create'. \Str::plural($this->getModelClass()). 'Table',
-            $this->getStub($this->stubFile)
+            $content
         );
         $content = str_replace('DummyTable', $this->tableName(), $content);
         $content = str_replace('DummyColumns', $this->makeColumns(), $content);
@@ -146,4 +146,8 @@ class MigrationFactory extends MakeFactory implements FactoryContract
         }
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }

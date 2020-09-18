@@ -17,11 +17,11 @@ class RequestFactory extends MakeFactory implements FactoryContract
     private string $dummyRules;
     private string $dummyMessages;
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
         $this->makeRulesAndMessage();
 
-        $content = str_replace('dummyRules', $this->dummyRules, $this->getStub($this->stubFile));
+        $content = str_replace('dummyRules', $this->dummyRules, $content);
         $content = str_replace('dummyMessages', $this->dummyMessages, $content);
 
         return $content;
@@ -67,4 +67,8 @@ class RequestFactory extends MakeFactory implements FactoryContract
             ' $this->method == \'POST\' ? "" : ",\'".request()->id,';
     }
 
+    public function getTemplate(): string
+    {
+        return  $this->getStub($this->stubFile);
+    }
 }

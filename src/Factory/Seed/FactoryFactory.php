@@ -14,10 +14,9 @@ class FactoryFactory extends MakeFactory implements FactoryContract
 {
     protected string $stubFile = 'factory/factory.stub';
 
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
-        $content = $this->replaceNamespace('Database\Factories', $this->stubFile);
-        $content = $this->commonReplaces($content);
+        $content = $this->replaceNamespace('Database\Factories', $content);
         $content =  str_replace('DummyFakers', $this->makeFakers(), $content);
         return $content;
     }
@@ -47,4 +46,8 @@ class FactoryFactory extends MakeFactory implements FactoryContract
         return '';
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }

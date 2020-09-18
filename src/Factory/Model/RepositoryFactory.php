@@ -14,14 +14,10 @@ class RepositoryFactory extends MakeFactory implements FactoryContract
 {
     protected string $stubFile = 'repository/repository.stub';
 
-    /**
-     * @inheritDoc
-     */
-    public function buildContent(): string
+    public function buildContent(string $content): string
     {
-        $content = $this->replaceNamespace('App\Repositories', $this->stubFile);
+        $content = $this->replaceNamespace('App\Repositories', $content);
         $content = str_replace('DummyFields', $this->getFields(), $content);
-        $content = $this->commonReplaces($content);
         $content = str_replace('DummyHas', $this->getHasMany(), $content);
 
         return $content;
@@ -54,4 +50,8 @@ class RepositoryFactory extends MakeFactory implements FactoryContract
         return $content . $this->tab(2) . ']';
     }
 
+    public function getTemplate(): string
+    {
+        return $this->getStub($this->stubFile);
+    }
 }
