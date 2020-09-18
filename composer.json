@@ -1,6 +1,7 @@
 {
     "name": "smartymoon/generator",
     "description": "Generate files to save time",
+    "license": "MIT",
     "authors": [
         {
             "name": "lee",
