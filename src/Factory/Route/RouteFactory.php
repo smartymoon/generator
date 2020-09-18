@@ -41,7 +41,7 @@ class RouteFactory extends MakeFactory implements FactoryContract
             Str::of($this->getModelClass())->snake()->replace('_', '-'),
             $content
         );
-        $content = $this->modelReplaces($content);
+        $content = $this->commonReplaces($content);
         return $content;
     }
 }

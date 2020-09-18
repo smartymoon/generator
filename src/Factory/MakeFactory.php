@@ -3,6 +3,7 @@ namespace Smartymoon\Generator\Factory;
 
 
 use Smartymoon\Generator\Config;
+use Str;
 
 /**
  * Class MakeFactory
@@ -14,6 +15,17 @@ class MakeFactory
 
     public function __construct(Config $config) {
         $this->config = $config;
+    }
+
+    /**
+     * $template 可能是真实文件，也可能是 stub
+     *
+     * @param string $template
+     * @return string
+     */
+    public function initContent(string $template): string
+    {
+        return $this->commonReplaces($template);
     }
 
     protected function getStub(string $stub_path): string
@@ -62,6 +74,15 @@ class MakeFactory
         return $path;
     }
 
+    protected function dealModuleInUse(): string
+    {
+        $module = $this->config->getModule();
+        if ($module === '/') {
+            return '';
+        }
+        return Str::finish($module , '\\');
+    }
+
     protected function replaceNamespace(string $base_namespace, string $stub): string
     {
         return str_replace(
@@ -96,14 +117,15 @@ class MakeFactory
      * @param string $content
      * @return string
      */
-    protected function modelReplaces(string $content): string
+    protected function commonReplaces(string $content): string
     {
         return str_replace(
-            ['DummyUseModel', 'DummyModel', 'DummyVariableModel'],
+            ['DummyUseModel', 'DummyModel', 'DummyVariableModel', 'DummyModuleInUse'],
             [
                 $this->dealModuleNamespace('App\Models') . '\\' . $this->getModelClass(),
                 $this->getModelClass(),
-                $this->getModelVariable()
+                $this->getModelVariable(),
+                $this->dealModuleInUse()
             ],
             $content
         );

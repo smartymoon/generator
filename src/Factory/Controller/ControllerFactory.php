@@ -15,31 +15,33 @@ use Smartymoon\Generator\Factory\MakeFactory;
  */
 class ControllerFactory extends MakeFactory implements FactoryContract
 {
-    public function buildContent(): string
+
+    public function buildContent(string $content): string
     {
         $content = str_replace(
             'DummyNamespace',
-            $this->dealModuleNamespace('App\Http\Controller'),
-            $this->getStub(
-             $this->config->hasRepository ?
-                 'controller/controller.stub' : 'controller/simpleController.stub'
-            )
-        );
-
-        $content = str_replace(
-            'DummyShowBaseController',
-            $this->config->inModule ? 'use App\Http\Controllers\BaseController;' : '' ,
+            $this->dealModuleNamespace('App\Http\Controllers'),
             $content
         );
 
+        $content = str_replace('DummyRepositoryModuleUse', $this->config->getModule(), $content);
         $content = str_replace('DummyClass', $this->getModelClass() . 'Controller', $content);
-        $content = $this->modelReplaces($content);
+        $content = $this->commonReplaces($content);
         return $content;
     }
 
     public function getFilePath(): string
     {
-        $base_path = base_path('app/Http/Controller/');
+        $base_path = base_path('app/Http/Controllers/');
         return $this->dealModulePath($base_path) . $this->getModelClass() . 'Controller' . '.php';
+    }
+
+    public function getTemplate(): string
+    {
+        return $this->getStub(
+                $this->config->hasRepository ?
+                    'controller/controller.stub' : 'controller/simpleController.stub'
+        );
+        
     }
 }

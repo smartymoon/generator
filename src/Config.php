@@ -58,7 +58,7 @@ class Config
     public function __construct(Request $request)
     {
         // controller_namespace,
-        $this->module = $request->input('module', '/');
+        $this->module = $request->input('module') ?: '/';
 
         $this->seedTimes = $request->input('seed_times');
 

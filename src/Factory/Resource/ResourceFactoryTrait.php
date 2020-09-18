@@ -17,7 +17,7 @@ Trait ResourceFactoryTrait
             $this->getStub($this->stubFile)
         );
 
-        $content = $this->modelReplaces($content);
+        $content = $this->commonReplaces($content);
         $content = str_replace('DummyClass', $this->getFileName(), $content);
         $content = str_replace('DummyFields', $this->getFields(), $content);
 

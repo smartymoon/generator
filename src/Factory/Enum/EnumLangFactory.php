@@ -14,7 +14,7 @@ class EnumLangFactory extends MakeFactory implements FactoryContract
     protected $fileName;
     protected $enums;
 
-    public function initEnum(array $enum): string
+    public function initEnum(array $enum)
     {
         $this->fileName = $enum['fileName'];
         $this->enums = $enum['list'];

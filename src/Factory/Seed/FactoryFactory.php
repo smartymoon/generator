@@ -16,8 +16,9 @@ class FactoryFactory extends MakeFactory implements FactoryContract
 
     public function buildContent(): string
     {
-        $content =  str_replace('DummyFakers', $this->makeFakers(), $this->getStub($this->stubFile));
-        $content = $this->modelReplaces($content);
+        $content = $this->replaceNamespace('Database\Factories', $this->stubFile);
+        $content = $this->commonReplaces($content);
+        $content =  str_replace('DummyFakers', $this->makeFakers(), $content);
         return $content;
     }
 
@@ -31,7 +32,7 @@ class FactoryFactory extends MakeFactory implements FactoryContract
     {
         $content = "\n";
         foreach($this->config->fields as $field) {
-            $content .= $this->tab(2). $this->makeFaker($field['field_name'], $field['faker']). "\n";
+            $content .= $this->tab(3). $this->makeFaker($field['field_name'], $field['faker']). "\n";
         }
         return $content;
     }

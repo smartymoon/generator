@@ -19,7 +19,7 @@ class SeederFactory extends MakeFactory implements FactoryContract
     public function buildContent(): string
     {
         $content = str_replace('DummyClass', $this->getModelClass().'Seeder', $this->getStub($this->stubFile));
-        $content = $this->modelReplaces($content);
+        $content = $this->commonReplaces($content);
         $content = str_replace('DummySeedTimes', $this->config->seedTimes, $content);
 
         return $content;
@@ -32,6 +32,6 @@ class SeederFactory extends MakeFactory implements FactoryContract
 
     public function getFilePath(): string
     {
-        return $this->dealModulePath(base_path('database/seeds/')). $this->getClassName() . '.php';
+        return $this->dealModulePath(base_path('database/seeders/')). $this->getClassName() . '.php';
     }
 }

@@ -2,13 +2,13 @@
 
 namespace DummyNamespace;
 
-DummyShowBaseController
+use App\Http\Controllers\Controller;
 use DummyUseModel;
 use Illuminate\Http\Request;
-use App\Http\Resources\DummyModelResource;
-use App\Http\Resources\DummyModelCollectionResource;
-use App\Repositories\DummyModelRepository;
-
+use App\Http\Resources\DummyModuleInUseDummyModel\DummyModelResource;
+use App\Http\Resources\DummyModuleInUseDummyModel\DummyModelCollectionResource;
+use App\Repositories\DummyModuleInUseDummyModelRepository;
+l
 class DummyClass extends Controller
 {
     protected $DummyVariableModelRepository;
