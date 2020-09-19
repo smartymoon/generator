@@ -17,6 +17,7 @@ class SeederFactory extends MakeFactory implements FactoryContract
 
     public function buildContent(string $content): string
     {
+        $content = $this->replaceNamespace('Database\Seeders', $content);
         $content = str_replace('DummyClass', $this->getModelClass().'Seeder', $content);
         $content = str_replace('DummySeedTimes', $this->config->seedTimes, $content);
 

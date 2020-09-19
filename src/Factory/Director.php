@@ -59,7 +59,9 @@ class Director
         foreach ($to_create_files as $file_key) {
             $factory = app(self::$factories[$file_key]);
 
-            $content = $factory->initContent(); // 初始化内容
+            $content = $factory->initContent(
+                $factory->getTemplate()
+            ); // 初始化内容
             $content = $factory->buildContent($content); // 子组件
             $file_path = $factory->getFilePath();
 

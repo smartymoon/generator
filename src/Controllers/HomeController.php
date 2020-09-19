@@ -15,10 +15,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // 检查一下，如果没有 BaseController，提示先 php artisan generator:init
-        if (!file_exists(base_path('app/Http/Controllers/BaseController.php'))) {
-            return '还没有初始化，请先运行 php artisan sm:init';
-        }
         return view('generator::index');
     }
 

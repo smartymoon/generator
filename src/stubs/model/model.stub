@@ -3,11 +3,12 @@
 namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DummyModel extends Model
 {
+    use HasFactory;
     protected $fillable = [DummyFillable];
-
 
     /**
      * Prepare a date for array / JSON serialization.

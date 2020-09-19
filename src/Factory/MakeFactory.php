@@ -40,7 +40,7 @@ class MakeFactory
 
     protected function hasManyMethodName(string $name): string
     {
-        return \Str::of($name)->camel()->plural();
+        return Str::of($name)->camel()->plural();
     }
 
     protected function getModelClass(string $name = null): string
@@ -48,7 +48,7 @@ class MakeFactory
         if (is_null($name)) {
             $name = $this->config->getModel('studly');
         }
-       return \Str::studly($name);
+       return Str::studly($name);
     }
 
     protected function getModelVariable(string $name = null): string
@@ -56,7 +56,7 @@ class MakeFactory
         if (is_null($name)) {
             $name = $this->config->getModel('camel');
         }
-        return \Str::camel($name);
+        return Str::camel($name);
     }
 
     /**
@@ -67,9 +67,9 @@ class MakeFactory
     protected function dealModulePath(string $path): string
     {
         $module = $this->config->getModule();
-        $path = \Str::finish($path, '/');
+        $path = Str::finish($path, '/');
         if ($module != '/') {
-            return \Str::finish($path . $module, '/');
+            return Str::finish($path . $module, '/');
         }
         return $path;
     }
@@ -95,10 +95,10 @@ class MakeFactory
     protected function tableName(string $name = null): string
     {
         $name = is_null($name) ? $this->config->getModel('snake') : $name;
-        return \Str::plural(\Str::snake($name));
+        return Str::plural(Str::snake($name));
     }
 
-    protected function tab($number = 2)
+    protected function tab(int $number = 2): string
     {
         return str_repeat('    ', $number);
     }
