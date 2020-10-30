@@ -65,7 +65,7 @@ class Faker
             176,177,178,
             180,181,182,183,184,185,186,187,188,189,
         ];
-        return $arr[array_rand($arr)].' '.mt_rand(1000,9999).' '.mt_rand(1000,9999);
+        return $arr[array_rand($arr)].mt_rand(1000,9999).mt_rand(1000,9999);
     }
 
     static public function random_id_card()
