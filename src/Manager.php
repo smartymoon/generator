@@ -149,9 +149,6 @@ class Manager {
             $may_create_files,
             $this->must_create_files,
         );
-        if (in_array('repository', $may_create_files)) {
-            $this->to_create_files[] = 'collectionResource';
-        }
     }
 
     private function makeFiles()

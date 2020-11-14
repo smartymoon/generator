@@ -10,13 +10,13 @@ use Smartymoon\Generator\Factory\Enum\EnumLangFactory;
 use Smartymoon\Generator\Factory\Model\MigrationFactory;
 use Smartymoon\Generator\Factory\Model\ModelFactory;
 use Smartymoon\Generator\Factory\Model\RepositoryFactory;
-use Smartymoon\Generator\Factory\Request\RequestFactory;
-use Smartymoon\Generator\Factory\Resource\CollectionResourceFactory;
-use Smartymoon\Generator\Factory\Resource\ResourceFactory;
 use Smartymoon\Generator\Factory\Route\RouteFactory;
 use Smartymoon\Generator\Factory\Seed\DatabaseSeederFactory;
 use Smartymoon\Generator\Factory\Seed\FactoryFactory;
 use Smartymoon\Generator\Factory\Seed\SeederFactory;
+use Smartymoon\Generator\Factory\Vue\IndexVueFactory;
+// use Smartymoon\Generator\Factory\Vue\ShowVueFactory;
+// use Smartymoon\Generator\Factory\Vue\EditVueFactory;
 use Smartymoon\Generator\GenerateLog;
 
 /**
@@ -33,11 +33,11 @@ class Director
          'seeder' => SeederFactory::class,
          'databaseSeeder' => DatabaseSeederFactory::class,
          'controller' => ControllerFactory::class,
-         'resource' => ResourceFactory::class,
-         'collectionResource' => CollectionResourceFactory::class,
          'repository' => RepositoryFactory::class,
-         'request' => RequestFactory::class,
          'route' => RouteFactory::class,
+         'index_vue' => IndexVueFactory::class,
+         // 'show_vue' => ShowVueFactory::class,
+         // 'edit_vue' => EditVueFactory::class,
     ];
 
     /**
@@ -48,10 +48,13 @@ class Director
     public static function launch($to_create_files)
     {
         if (in_array('repository', $to_create_files)) {
-            $to_create_files[] = 'resource';
-            $to_create_files[] = 'collectionResource';
+            $to_create_files[] = 'vue';
+            $to_create_files = array_merge($to_create_files, [
+                'index_vue',
+                // 'show_vue',
+                // 'edit_vue'
+            ]);
         }
-
         $to_create_files = array_merge($to_create_files, [
             'model', 'migration', 'factory', 'seeder', 'databaseSeeder', 'controller'
         ]);

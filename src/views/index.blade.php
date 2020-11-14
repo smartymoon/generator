@@ -44,7 +44,6 @@
                 <el-form-item label="生成文件">
                     <el-checkbox-group v-model="config.to_create_files">
                         <el-checkbox label="repository"></el-checkbox>
-                        <el-checkbox label="request"></el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
 

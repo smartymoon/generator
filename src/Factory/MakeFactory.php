@@ -98,6 +98,11 @@ class MakeFactory
         return Str::plural(Str::snake($name));
     }
 
+    protected function pluralModel(string $name = null)
+    {
+        return $this->tableName($name);
+    }
+
     protected function tab(int $number = 2): string
     {
         return str_repeat('    ', $number);
@@ -120,12 +125,13 @@ class MakeFactory
     protected function commonReplaces(string $content): string
     {
         return str_replace(
-            ['DummyUseModel', 'DummyModel', 'DummyVariableModel', 'DummyModuleInUse'],
+            ['DummyUseModel', 'DummyModel', 'DummyVariableModel', 'DummyModuleInUse', 'DummyPluralModel'],
             [
                 $this->dealModuleNamespace('App\Models') . '\\' . $this->getModelClass(),
                 $this->getModelClass(),
                 $this->getModelVariable(),
-                $this->dealModuleInUse()
+                $this->dealModuleInUse(),
+                $this->pluralModel()
             ],
             $content
         );

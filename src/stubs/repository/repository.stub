@@ -15,21 +15,28 @@ class DummyModelRepository extends  BaseRepository
         return DummyModel::class;
     }
 
-    public function getList(Request $request)
+    public function getList(array $params)
     {
         $query = $this->model->select(['id', DummyFields]);
 
         /*
-        if ($user_id = $request->input('user_id)) {
-            $query = $query->where('user_id', $user_id);
-        }
+        $query->when($params[], function($q, $name) {
+            $query->where('user_id', $user_id);
+        });
         */
 
-        return $this->getPage($query);
+        return $this->getPage($query, function($item) {
+            return [
+                'foo' => $item->bar
+            ];
+        });
     }
 
     public function getDetail($DummyVariableModel)
     {
-        return $DummyVariableModel->load(DummyHas);
+        $detail = $DummyVariableModel->load(DummyHas);
+        return [
+            'foo' => $detail->bar
+        ];
     }
 }

@@ -56,9 +56,12 @@ abstract class BaseRepository
         return $this->model = $model;
     }
 
-    protected function getPage(Builder $query, $ifLatest = true)
+    protected function getPage($query, $callback = null)
     {
-        if ($ifLatest) $query = $query->orderByDesc('id');
-        return $query->paginate(intval(request('per_page', 20)));
+       $pagination =  $query->simplePaginate(intval(request('per_page', 20)));
+       return [
+         'hasMorePages' => $pagination->hasMorePages(),
+         'list' => $callback ? $pagination->transform($callback) : $pagination->items()
+       ];
     }
 }
