@@ -20,6 +20,7 @@ class ControllerFactory extends MakeFactory implements FactoryContract
     {
         $content = $this->replaceNamespace('App\Http\Controllers', $content);
         $content = str_replace('DummyClass', $this->getModelClass() . 'Controller', $content);
+        $content = str_replace('DummyModelPathInView', $this->modelPathInView(), $content);
         return $content;
     }
 

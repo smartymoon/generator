@@ -60,6 +60,22 @@ class MakeFactory
     }
 
     /**
+     * SubMou/Report , Report
+     * 模型，或者有模块的模型o
+     * 用于 Inertia::render(这里), 和 制作文件的时候
+     */
+    protected function modelPathInView()
+    {
+        $module = $this->config->getModule();
+        $model = $this->getModelClass();
+
+        if ($module === '/') {
+            return $model;
+        }
+        return $module . '/' . $model;
+    }
+
+    /**
      * return path finish with '/'
      * @param string $path
      * @return string
