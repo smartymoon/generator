@@ -15,8 +15,8 @@ use Smartymoon\Generator\Factory\Seed\DatabaseSeederFactory;
 use Smartymoon\Generator\Factory\Seed\FactoryFactory;
 use Smartymoon\Generator\Factory\Seed\SeederFactory;
 use Smartymoon\Generator\Factory\Vue\IndexVueFactory;
-// use Smartymoon\Generator\Factory\Vue\ShowVueFactory;
-// use Smartymoon\Generator\Factory\Vue\EditVueFactory;
+use Smartymoon\Generator\Factory\Vue\ShowVueFactory;
+use Smartymoon\Generator\Factory\Vue\EditVueFactory;
 use Smartymoon\Generator\GenerateLog;
 
 /**
@@ -36,8 +36,8 @@ class Director
          'repository' => RepositoryFactory::class,
          'route' => RouteFactory::class,
          'index_vue' => IndexVueFactory::class,
-         // 'show_vue' => ShowVueFactory::class,
-         // 'edit_vue' => EditVueFactory::class,
+         'show_vue' => ShowVueFactory::class,
+         'edit_vue' => EditVueFactory::class,
     ];
 
     /**
@@ -50,8 +50,8 @@ class Director
         if (in_array('repository', $to_create_files)) {
             $to_create_files = array_merge($to_create_files, [
                 'index_vue',
-                // 'show_vue',
-                // 'edit_vue'
+                 'show_vue',
+                 'edit_vue'
             ]);
         }
         $to_create_files = array_merge($to_create_files, [

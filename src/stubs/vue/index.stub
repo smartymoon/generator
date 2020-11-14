@@ -1,25 +1,25 @@
 <template>
-    <div> DummyModel 的首页, 展示列表 </div>
+  <div> DummyModel 的首页, 展示列表 </div>
 </template>
 
 <script>
 export default {
-    props: {
-        // 可分页的资源列表
-        DummyPluralModel: {
-            type: Object,
-            default: () => {
-                return {
-                    list: [],
-                    hasMorePages: false
-                }
-            }
-        }
-    },
-    setup(props) {
+  props: {
+    // 可分页的资源列表
+    DummyPluralModel: {
+      type: Object,
+      default: () => {
         return {
-
+          list: [],
+          hasMorePages: false
         }
+      }
     }
+  },
+  setup(props) {
+    return {
+
+    }
+  }
 }
 </script>
