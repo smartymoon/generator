@@ -48,7 +48,6 @@ class Director
     public static function launch($to_create_files)
     {
         if (in_array('repository', $to_create_files)) {
-            $to_create_files[] = 'vue';
             $to_create_files = array_merge($to_create_files, [
                 'index_vue',
                 // 'show_vue',

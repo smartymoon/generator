@@ -10,24 +10,20 @@ use Smartymoon\Generator\Factory\MakeFactory;
  */
 class IndexVueFactory extends MakeFactory implements FactoryContract
 {
-    protected string $stubFile = 'model/model.stub';
-
     public function buildContent(string $content): string
     {
-        $content = $this->replaceNamespace('App\Models', $content);
-        $content = str_replace('DummyFillable', $this->makeFillable(), $content);
+        $content = str_replace('DummyModelPathInView', $this->modelPathInView(), $content);
         return $content;
     }
 
     public function getFilePath(): string
     {
-        $base_path = base_path('app/Models/');
-        return $this->dealModulePath($base_path) . $this->getModelClass() . '.php';
+        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/Index.vue';
     }
 
 
     public function getTemplate(): string
     {
-        return $this->getStub($this->stubFile);
+        return $this->getStub('vue/index.stub');
     }
 }

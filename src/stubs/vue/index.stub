@@ -9,8 +9,10 @@ export default {
         DummyPluralModel: {
             type: Object,
             default: () => {
-                list: [],
-                hasMorePages: false
+                return {
+                    list: [],
+                    hasMorePages: false
+                }
             }
         }
     },
