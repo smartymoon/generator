@@ -4,8 +4,9 @@ namespace DummyNamespace;
 
 use DummyUseModel;
 use Illuminate\Http\Request;
+use App\Repositories\BaseRepository;
 
-class DummyModelRepository extends  BaseRepository
+class DummyModelRepository extends BaseRepository
 {
     /**
      * @inheritDoc
