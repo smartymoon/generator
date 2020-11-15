@@ -17,7 +17,7 @@ class DatabaseSeederFactory extends MakeFactory implements FactoryContract
 
     public function buildContent(string $content): string
     {
-        return str_replace('//DummySeeder', $this->injectSeeder(), $content);
+        return str_replace('//DummySeeder', $this->dealModuleInUse() . $this->injectSeeder(), $content);
     }
 
     public function getFilePath(): string

@@ -116,7 +116,8 @@ class MakeFactory
 
     protected function pluralModel(string $name = null)
     {
-        return $this->tableName($name);
+        $name = is_null($name) ? $this->config->getModel('camel') : $name;
+        return Str::plural(Str::camel($name));
     }
 
     protected function tab(int $number = 2): string
