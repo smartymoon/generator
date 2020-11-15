@@ -1,0 +1,35 @@
+<?php
+
+namespace DummyNamespace\DummyModel;
+
+use Smartymoon\Inertia\InertiaSetup;
+use Styde\Enlighten\Tests\EnlightenSetup;
+use Tests\TestCase;
+
+
+/**
+ * @testdox DummyModel 的列表显示
+ */
+class IndexTest extends TestCase
+{
+    use EnlightenSetup;
+    use InertiaSetup;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpEnlighten();
+        $this->setUpInertia();
+    }
+
+    /**
+     * @testdox DummyModel 的默认列表显示
+     */
+    public function test_DummyVariableModel_default_list()
+    {
+        $this->get('')
+            ->assertInertia('DummyPathInView/Index', [
+               'DummyPluralModel'
+            ]);
+    }
+}

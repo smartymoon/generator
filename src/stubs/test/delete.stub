@@ -1,0 +1,32 @@
+<?php
+
+namespace DummyNamespace\DummyModel;
+
+use Smartymoon\Inertia\InertiaSetup;
+use Styde\Enlighten\Tests\EnlightenSetup;
+use Tests\TestCase;
+
+
+/**
+ * @testdox DummyModel 的删除操作
+ */
+class DeleteTest extends TestCase
+{
+    use EnlightenSetup;
+    use InertiaSetup;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpEnlighten();
+        $this->setUpInertia();
+    }
+
+    /**
+     * @testdox DummyModel 的删除操作
+     */
+    public function test_DummyVariableModel_detail()
+    {
+        $this->delete('')->assertRedirect();
+    }
+}

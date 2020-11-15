@@ -17,6 +17,10 @@ use Smartymoon\Generator\Factory\Seed\SeederFactory;
 use Smartymoon\Generator\Factory\Vue\IndexVueFactory;
 use Smartymoon\Generator\Factory\Vue\ShowVueFactory;
 use Smartymoon\Generator\Factory\Vue\EditVueFactory;
+use Smartymoon\Generator\Factory\Test\IndexTestFactory;
+use Smartymoon\Generator\Factory\Test\ShowTestFactory;
+use Smartymoon\Generator\Factory\Test\EditTestFactory;
+use Smartymoon\Generator\Factory\Test\DeleteTestFactory;
 use Smartymoon\Generator\GenerateLog;
 
 /**
@@ -27,17 +31,21 @@ use Smartymoon\Generator\GenerateLog;
 class Director
 {
     public static array $factories = [
-         'model' => ModelFactory::class,
-         'migration' => MigrationFactory::class,
-         'factory' => FactoryFactory::class,
-         'seeder' => SeederFactory::class,
-         'databaseSeeder' => DatabaseSeederFactory::class,
-         'controller' => ControllerFactory::class,
-         'repository' => RepositoryFactory::class,
-         'route' => RouteFactory::class,
-         'index_vue' => IndexVueFactory::class,
-         'show_vue' => ShowVueFactory::class,
-         'edit_vue' => EditVueFactory::class,
+        'model' => ModelFactory::class,
+        'migration' => MigrationFactory::class,
+        'factory' => FactoryFactory::class,
+        'seeder' => SeederFactory::class,
+        'databaseSeeder' => DatabaseSeederFactory::class,
+        'controller' => ControllerFactory::class,
+        'repository' => RepositoryFactory::class,
+        'route' => RouteFactory::class,
+        'index_vue' => IndexVueFactory::class,
+        'show_vue' => ShowVueFactory::class,
+        'edit_vue' => EditVueFactory::class,
+        'index_test' => IndexTestFactory::class,
+        'show_test' => ShowTestFactory::class,
+        'edit_test' => EditTestFactory::class,
+        'delete_test' => DeleteTestFactory::class,
     ];
 
     /**
@@ -50,8 +58,12 @@ class Director
         if (in_array('repository', $to_create_files)) {
             $to_create_files = array_merge($to_create_files, [
                 'index_vue',
-                 'show_vue',
-                 'edit_vue'
+                'show_vue',
+                'edit_vue',
+                'index_test',
+                'show_test',
+                'edit_test',
+                'delete_test',
             ]);
         }
         $to_create_files = array_merge($to_create_files, [

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\DummyModuleInUseDummyModelRepository;
 use Inertia\Inertia;
 
-class HelloController extends Controller
+class DummyModelController extends Controller
 {
     protected $DummyVariableModelRepository;
 
@@ -58,7 +58,6 @@ class HelloController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\DummyModel  $DummyVariableModel
      * @return \Illuminate\Http\Response
      */
     public function show(DummyModel $DummyVariableModel)
@@ -69,7 +68,6 @@ class HelloController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\DummyModel  $DummyVariableModel
      * @return \Illuminate\Http\Response
      */
     public function edit(DummyModel $DummyVariableModel)
@@ -82,7 +80,6 @@ class HelloController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\DummyModel  $DummyVariableModel
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, DummyModel $DummyVariableModel)
@@ -95,7 +92,6 @@ class HelloController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\DummyModel  $DummyVariableModel
      * @return \Illuminate\Http\Response
      */
     public function destroy(DummyModel $DummyVariableModel)
