@@ -4,7 +4,6 @@ namespace DummyNamespace;
 
 use DummyUseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Smartymoon\Generator\Faker;
 
 class DummyModelFactory extends Factory
