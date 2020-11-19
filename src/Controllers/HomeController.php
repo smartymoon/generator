@@ -53,7 +53,7 @@ class HomeController extends Controller
 
             Artisan::call('migrate');
             exec('cd '. base_path() .  '&& composer dump-autoload');
-            exec('cd '. base_path() . '&& php artisan db:seed --class '. app(SeederFactory::class)->getClassName());
+            // exec('cd '. base_path() . '&& php artisan db:seed --class '. app(SeederFactory::class)->getClassName());
 
         } catch(GenerateException $exception) {
             $result['code'] = 204;

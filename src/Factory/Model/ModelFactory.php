@@ -1,7 +1,6 @@
 <?php
 namespace Smartymoon\Generator\Factory\Model;
 
-use Psy\Util\Str;
 use Smartymoon\Generator\Factory\FactoryContract;
 use Smartymoon\Generator\Factory\MakeFactory;
 
@@ -53,7 +52,7 @@ class ModelFactory extends MakeFactory implements FactoryContract
         $content = '';
         foreach($this->config->fields as $field) {
             if ($field['belongsTo']) {
-                $function_name = Str::of(substr($field['field_name'], 0, -3))->camel();
+                $function_name = \Str::of(substr($field['field_name'], 0, -3))->camel();
                 $content_temp =  str_replace(
                     'DummyRelation',
                     $function_name,
