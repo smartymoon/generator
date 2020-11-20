@@ -56,6 +56,13 @@ class Faker
         return rand($start, $end);
     }
 
+
+    static public function rand_float($min = 10, $max = 200, $place = 1)
+    {
+        $times = pow(10, $place);
+        return mt_rand($min * $times, $max * $times) / $times;
+    }
+
     static public function random_phone()
     {
         $arr = [
@@ -67,6 +74,7 @@ class Faker
         ];
         return $arr[array_rand($arr)].mt_rand(1000,9999).mt_rand(1000,9999);
     }
+
 
     static public function random_id_card()
     {
