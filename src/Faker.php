@@ -7,9 +7,9 @@ class Faker
     static public function random_video($shape): string
     {
         if ($shape == 'fat') {
-            return "https://dummyimage.com/400x250";
+            return 'https://www.w3schools.com/html/mov_bbb.mp4';
         } else if ($shape == 'tall') {
-            return "https://dummyimage.com/250x350";
+            return 'https://sf1-scmcdn-tos.pstatp.com/goofy/ies/douyin_home_web/medias/1-1.98effe6c.mp4';
         }
     }
 
