@@ -189,10 +189,12 @@
                                     <el-option value="random_chinese(80, 100)" label="段落"></el-option>
                                     <el-option value="random_chinese(800, 1200)" label="文章"></el-option>
                                 </el-option-group>
-                                <el-option-group label="图片">
+                                <el-option-group label="媒体">
                                     <el-option value="random_image('square')" label="方图片"></el-option>
                                     <el-option value="random_image('fat')" label="宽图片"></el-option>
                                     <el-option value="random_image('tall')" label="高图片"></el-option>
+                                    <el-option value="random_video('fat')" label="宽视频"></el-option>
+                                    <el-option value="random_video('tall')" label="高视频"></el-option>
                                 </el-option-group>
                                 <el-option-group label="时间">
                                     <el-option value="random_date('future')" label="未来"></el-option>

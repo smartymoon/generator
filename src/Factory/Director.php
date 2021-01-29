@@ -87,6 +87,7 @@ class Director
             file_put_contents($file_path, $content);
         }
 
+
         app(EnumDirector::class)->launch();
     }
 }

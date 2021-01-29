@@ -8,14 +8,6 @@ use App\Repositories\BaseRepository;
 
 class DummyModelRepository extends BaseRepository
 {
-    /**
-     * @inheritDoc
-     */
-    public function model()
-    {
-        return DummyModel::class;
-    }
-
     public function getList(array $params)
     {
         $query = $this->model->select(['id', DummyFields]);
