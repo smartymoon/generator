@@ -2,17 +2,25 @@
 
 namespace DummyNamespace;
 
-use \Spatie\Enum\Enum;
+use \Spatie\Enum\Laravel\Enum;
+use \Smartymoon\Generator\Contracts\ColorEnum;
 
 /**
 DummyComment
  */
-class DummyClass extends Enum
+final class DummyClass extends Enum implements ColorEnum
 {
     protected static function labels(): array
     {
         return [
 DummyLabels
         ];
+    }
+
+    public function getColor(): string
+    {
+        return [
+DummyColors
+        ][$this->value];
     }
 }

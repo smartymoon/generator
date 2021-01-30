@@ -3,6 +3,7 @@
 
 namespace Smartymoon\Generator\Factory\Enum;
 
+use Dcat\Admin\Admin;
 use Smartymoon\Generator\Factory\FactoryContract;
 use Smartymoon\Generator\Factory\MakeFactory;
 
@@ -26,6 +27,7 @@ class EnumFactory extends MakeFactory implements FactoryContract
         $content = str_replace('DummyComment', $this->makeComment(), $content);
         $content = str_replace('DummyClass', $this->fileName, $content);
         $content = str_replace('DummyLabels', $this->makeLabels(), $content);
+        $content = str_replace('DummyColors', $this->makeColors(), $content);
 
         return $content;
     }
@@ -57,6 +59,16 @@ class EnumFactory extends MakeFactory implements FactoryContract
         $content = '';
         foreach($this->enums as $enum) {
             $content .= $this->tab(3) . "'{$enum['english']}' => '{$enum['chinese']}',\n";
+        }
+        return $content;
+    }
+
+    public function makeColors()
+    {
+        $colors = array_keys(Admin::color()->all());
+        $content = '';
+        foreach($this->enums as $key => $enum) {
+            $content .= $this->tab(3) . "'{$enum['english']}' => \Admin::color()->{$colors[$key]}(),\n";
         }
         return $content;
     }
