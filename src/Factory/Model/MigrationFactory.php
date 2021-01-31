@@ -53,18 +53,30 @@ class MigrationFactory extends MakeFactory implements FactoryContract
     {
         $content = "\n";
         foreach($this->config->fields as $field) {
+            // make filed name
             if ($field['foreign_policy']) {
                 $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
                 $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
             } else {
                 $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
-                foreach($field['migration'] as $migrate) {
-                    $content .= '->'. $this->makeMigrate($field['field_name'], $migrate);
-                }
-                $content .= ";\n";
+            }
+
+            // make methods
+            foreach($field['methods'] as $method) {
+                $content .= '->'. $this->makeMethods($field['field_name'], $method);
+            }
+
+            // make content
+            if ($field['comment']) {
+                $content .= "->comment('" . $field['comment'] . "')";
+            }
+
+            // make default
+            if ($field['default']) {
+                $content .= "->default('" . $field['default'] . "')";
             }
         }
-        return $content;
+        return $content .= ";\n";
     }
 
     private function makeForeign(string $field_name, string $foreign_policy, string $foreign_table = null): string
@@ -88,18 +100,15 @@ class MigrationFactory extends MakeFactory implements FactoryContract
         return  $foreign . ';';
     }
 
-    private function makeMigrate(string $field_name, string $migrate): string
+    private function makeMethods(string $field_name, string $method): string
     {
-        $this->checkMigrateMethod($field_name, $migrate);
-        return $position = strpos($migrate, '(') ? $migrate : $migrate . '()';
+        $this->checkMigrateMethod($field_name, $method);
+        // return $position = strpos($migrate, '(') ? $migrate : $migrate . '()';
+        return $method . '()';
     }
 
-    private function checkMigrateMethod(String $name, String $method): void
+    private function checkMigrateMethod(String $name, String $to_check): void
     {
-        $position = strpos($method, '(');
-        $to_check = $position === false ? $method :
-            substr($method, 0, $position);
-
         if(!in_array($to_check, $this->getRightMethodList())) {
             throw new GenerateException('表字段'. $name . '的类型 '. $to_check. ' 不存在');
         }

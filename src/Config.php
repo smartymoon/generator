@@ -23,10 +23,6 @@ class Config
      *   'belongsTo' => (bool) 是否为关联字段，example: user_id
      *   'type' => (string) string, unsignedInteger...
      *   'migration' => nullable | default | comment | index | unique
-     *   'migration_params' => [
-     *        default: '',
-     *        comment: ''
-     *   ],
      *   'foreign_policy' => cascade | restrict
      *   'foreign_table' => (string) 关连表
      *   'faker' => (function) example: rand(1, 6)

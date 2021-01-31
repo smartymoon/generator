@@ -219,12 +219,8 @@
                     </el-form-item>
                     <div class="w-2/3 pl-4">
                         <el-form-item label="特性">
-                            <el-checkbox-group v-model="field.migration">
+                            <el-checkbox-group v-model="field.methods">
                                 <el-checkbox label="nullable"></el-checkbox>
-                                <!--
-                                <el-checkbox label="default"></el-checkbox>
-                                <el-checkbox label="comment"></el-checkbox>
-                                -->
                                 <el-checkbox label="index"></el-checkbox>
                                 <el-checkbox label="unique"></el-checkbox>
                             </el-checkbox-group>
@@ -276,7 +272,7 @@
         type: 'string',
         foreign_policy: '',
         foreign_table: '',
-        migration: [],
+        methods: [],
         comment: '',
         default: '',
         faker: 'rand(1, 3)',
