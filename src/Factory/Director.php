@@ -55,19 +55,27 @@ class Director
      */
     public static function launch($to_create_files)
     {
-        if (in_array('repository', $to_create_files)) {
+        if (($test_key = array_search('test', $to_create_files)) !== false) {
+            unset($to_create_files[$test_key]);
             $to_create_files = array_merge($to_create_files, [
-                'index_vue',
-                'show_vue',
-                'edit_vue',
                 'index_test',
                 'show_test',
                 'edit_test',
                 'delete_test',
             ]);
         }
+
+        if (($vue_key = array_search('vue', $to_create_files)) !== false) {
+            unset($to_create_files[$vue_key]);
+            $to_create_files = array_merge($to_create_files, [
+                'index_vue',
+                'show_vue',
+                'edit_vue',
+            ]);
+        }
+
         $to_create_files = array_merge($to_create_files, [
-            'model', 'migration', 'factory', 'seeder', 'databaseSeeder', 'controller'
+            'model', 'migration', 'factory', 'seeder', 'databaseSeeder'
         ]);
 
         foreach ($to_create_files as $file_key) {
