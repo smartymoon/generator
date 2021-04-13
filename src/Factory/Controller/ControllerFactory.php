@@ -32,8 +32,16 @@ class ControllerFactory extends MakeFactory implements FactoryContract
 
     public function getTemplate(): string
     {
+        if ($this->config->template === 'api') {
+            $stub = 'controller/apiController.stub';
+        } else if ($this->config->template === 'inertia') {
+            $stub = 'controller/inertiaController.stub';
+        } else if ($this->config->template === 'blade'){
+            $stub = 'controller/bladeController.stub';
+        }
+
         return $this->getStub(
-        $this->config->hasRepository ? 'controller/controller.stub' : 'controller/simpleController.stub'
+            $stub
         );
     }
 }
