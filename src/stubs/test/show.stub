@@ -2,34 +2,19 @@
 
 namespace DummyNamespace\DummyModel;
 
-use Smartymoon\Inertia\InertiaSetup;
-use Styde\Enlighten\Tests\EnlightenSetup;
 use Tests\TestCase;
-
 
 /**
  * @testdox DummyModel 的详情页面与编辑页面
  */
 class ShowTest extends TestCase
 {
-    use EnlightenSetup;
-    use InertiaSetup;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setUpEnlighten();
-        $this->setUpInertia();
-    }
-
     /**
      * @testdox DummyModel 的详情页面
      */
     public function test_DummyVariableModel_detail()
     {
-        $this->get('')
-            ->assertInertia('DummyPathInView/Show', [
-               'DummyVariableModel'
-            ]);
+        $response = $this->json('get', '/');
+        $response->assertStrats(200);
     }
 }

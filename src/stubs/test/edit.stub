@@ -2,32 +2,19 @@
 
 namespace DummyNamespace\DummyModel;
 
-use Smartymoon\Inertia\InertiaSetup;
-use Styde\Enlighten\Tests\EnlightenSetup;
 use Tests\TestCase;
-
 
 /**
  * @testdox DummyModel 的创建与编辑操作
  */
 class EditTest extends TestCase
 {
-    use EnlightenSetup;
-    use InertiaSetup;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setUpEnlighten();
-        $this->setUpInertia();
-    }
-
     /**
      * @testdox DummyModel 的创建操作
      */
     public function test_DummyVariableModel_create()
     {
-        $this->post('')->assertRedirect();
+        $this->post('/')->assertRedirect();
     }
 
     /**
@@ -35,6 +22,6 @@ class EditTest extends TestCase
      */
     public function test_DummyVariableModel_update()
     {
-        $this->put('')->assertRedirect();
+        $this->put('/')->assertRedirect();
     }
 }

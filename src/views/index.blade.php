@@ -20,11 +20,11 @@
         <div v-html="response"></div>
     </el-dialog>
 
-    <div class="w-1/5 h-full">
+    <div class="w-2/5 h-full">
         <el-form ref="form" :model="config" label-position="top" size="small">
-            <el-form-item label="模板" class="w-4/5">
-                <el-radio v-model="config.template" label="api"></el-radio>
+            <el-form-item label="模板" class="">
                 <el-radio v-model="config.template" label="inertia"></el-radio>
+                <el-radio v-model="config.template" label="api"></el-radio>
                 <el-radio v-model="config.template" label="blade_view"></el-radio>
             </el-form-item>
 
@@ -240,7 +240,7 @@
             dialogVisible: false,
             response: '',
             config: {
-                template: 'api',
+                template: 'inertia',
                 model: '',
                 hasMany: [],
                 module: '',
