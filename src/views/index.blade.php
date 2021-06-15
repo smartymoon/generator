@@ -88,140 +88,87 @@
                 </el-form-item>
             </div>
             <div class="flex">
-                <el-form-item label="字段类型" class="w-1/3">
+                <el-form-item label="字段类型" class="w-1/3 mr-3">
                     <el-select v-model="field.type" filterable class="w-full">
-                        <el-option value="increments"></el-option>
-                        <el-option value="integerIncrements"></el-option>
-                        <el-option value="tinyIncrements"></el-option>
-                        <el-option value="smallIncrements"></el-option>
-                        <el-option value="mediumIncrements"></el-option>
-                        <el-option value="bigIncrements"></el-option>
-                        <el-option value="char"></el-option>
-                        <el-option value="string"></el-option>
-                        <el-option value="text"></el-option>
-                        <el-option value="mediumText"></el-option>
-                        <el-option value="longText"></el-option>
-                        <el-option value="integer"></el-option>
-                        <el-option value="tinyInteger"></el-option>
-                        <el-option value="smallInteger"></el-option>
-                        <el-option value="mediumInteger"></el-option>
-                        <el-option value="bigInteger"></el-option>
-                        <el-option value="unsignedInteger"></el-option>
+                        <el-option value="id"></el-option>
                         <el-option value="unsignedTinyInteger"></el-option>
                         <el-option value="unsignedSmallInteger"></el-option>
+                        <el-option value="unsignedInteger"></el-option>
                         <el-option value="unsignedMediumInteger"></el-option>
                         <el-option value="unsignedBigInteger"></el-option>
-                        <el-option value="float"></el-option>
-                        <el-option value="double"></el-option>
-                        <el-option value="decimal"></el-option>
                         <el-option value="unsignedDecimal"></el-option>
+                        <el-option value="char(10)"></el-option>
+                        <el-option value="string"></el-option>
+                        <el-option value="text"></el-option>
                         <el-option value="boolean"></el-option>
-                        <el-option value="enum"></el-option>
-                        <el-option value="set"></el-option>
                         <el-option value="json"></el-option>
-                        <el-option value="jsonb"></el-option>
+                        <el-option value="year"></el-option>
                         <el-option value="date"></el-option>
                         <el-option value="dateTime"></el-option>
-                        <el-option value="dateTimeTz"></el-option>
-                        <el-option value="time"></el-option>
-                        <el-option value="timeTz"></el-option>
-                        <el-option value="timestamp"></el-option>
-                        <el-option value="timestampTz"></el-option>
-                        <el-option value="timestamps"></el-option>
-                        <el-option value="nullableTimestamps"></el-option>
-                        <el-option value="timestampsTz"></el-option>
-                        <el-option value="softDeletes"></el-option>
-                        <el-option value="softDeletesTz"></el-option>
-                        <el-option value="year"></el-option>
-                        <el-option value="binary"></el-option>
-                        <el-option value="uuid"></el-option>
                         <el-option value="ipAddress"></el-option>
-                        <el-option value="macAddress"></el-option>
-                        <el-option value="geometry"></el-option>
-                        <el-option value="point"></el-option>
-                        <el-option value="lineString"></el-option>
-                        <el-option value="polygon"></el-option>
-                        <el-option value="geometryCollection"></el-option>
-                        <el-option value="multiPoint"></el-option>
-                        <el-option value="multiLineString"></el-option>
-                        <el-option value="multiPolygon"></el-option>
-                        <el-option value="multiPolygonZ"></el-option>
-                        <el-option value="computed"></el-option>
-                        <el-option value="morphs"></el-option>
-                        <el-option value="nullableMorphs"></el-option>
-                        <el-option value="uuidMorphs"></el-option>
-                        <el-option value="nullableUuidMorphs"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="关联字段" class="mx-4 pr-8 border-r">
-                    <el-radio v-model="field.belongsTo" :label="true">是</el-radio>
-                    <el-radio v-model="field.belongsTo" :label="false">否</el-radio>
-                </el-form-item>
-                <el-form-item label="外键" class="ml-8">
-                    <el-radio v-model="field.foreign_policy" label="">无</el-radio>
-                    <el-radio v-model="field.foreign_policy" label="cascade">都删</el-radio>
-                    <el-radio v-model="field.foreign_policy" label="restrict">禁删</el-radio>
-                </el-form-item>
-                <el-form-item label="外键表" class="ml-8">
-                    <el-input v-model="field.foreign_table" placeholder="表名" class="w-32" size="mini"></el-input>
+                <el-form-item label="Faker" class="w-1/3">
+                    <el-select v-model="field.faker" filterable class="w-full" allow-create default-first-option>
+                        <el-option-group label="自定义方法举例" disabled>
+                            <el-option value="enum">enum('video','music', 'image')</el-option>
+                            <el-option value="fixed">原样输出 fixed('精选')</el-option>
+                        </el-option-group>
+                        <el-option-group label="数字">
+                            <el-option value="rand(0, 1)" label="Boolean"></el-option>
+                            <el-option value="rand(1, 2)" label="2 数字枚选"></el-option>
+                            <el-option value="rand(1, 3)" label="3 数字枚选"></el-option>
+                            <el-option value="rand(1, 4)" label="4 数字枚选"></el-option>
+                            <el-option value="rand(1, 5)" label="5 数字枚选"></el-option>
+                            <el-option value="rand(1, 6)" label="6 数字枚选"></el-option>
+                            <el-option value="rand(1, 10)" label="10内随机数"></el-option>
+                            <el-option value="rand(1, 20)" label="1 - 20 随机数"></el-option>
+                            <el-option value="rand(1, 50)" label="1 - 50 随机数"></el-option>
+                            <el-option value="rand(1, 100)" label="1 - 100 随机数"></el-option>
+                            <el-option value="rand(1, 500)" label="1 - 500 随机数"></el-option>
+                            <el-option value="rand(10, 100)" label="10 - 100 随机数"></el-option>
+                            <el-option value="rand(100, 900)" label="100 - 900 随机数"></el-option>
+                            <el-option value="rand(1000, 9000)" label="1000 - 9000 随机数"></el-option>
+                            <el-option value="rand(100000, 90000)" label="10000 - 90000 随机数"></el-option>
+                        </el-option-group>
+                        <el-option-group label="文字">
+                            <el-option value="chinese(2)" label="2字"></el-option>
+                            <el-option value="chinese(3)" label="3字"></el-option>
+                            <el-option value="chinese(4)" label="4字"></el-option>
+                            <el-option value="chinese(6)" label="6字"></el-option>
+                            <el-option value="chinese(8)" label="8字"></el-option>
+                            <el-option value="chinese(10)" label="10字"></el-option>
+                            <el-option value="chinese(2, 4)" label="2 - 4字"></el-option>
+                            <el-option value="chinese(10, 15)" label="10 - 15字"></el-option>
+                            <el-option value="chinese(15, 20)" label="15 - 20字"></el-option>
+                            <el-option value="chinese(80, 100)" label="段落"></el-option>
+                            <el-option value="chinese(800, 1200)" label="文章"></el-option>
+                        </el-option-group>
+                        <el-option-group label="媒体">
+                            <el-option value="image('square')" label="方图片"></el-option>
+                            <el-option value="image('fat')" label="宽图片"></el-option>
+                            <el-option value="image('tall')" label="高图片"></el-option>
+                            <el-option value="video('fat')" label="宽视频"></el-option>
+                            <el-option value="video('tall')" label="高视频"></el-option>
+                        </el-option-group>
+                        <el-option-group label="时间">
+                            <el-option value="date('future')" label="未来"></el-option>
+                            <el-option value="date('past')" label="过去"></el-option>
+                        </el-option-group>
+                        <el-option-group label="网址">
+                            <el-option value="url()" label="URL"></el-option>
+                        </el-option-group>
+                        <el-option-group label="英文">
+                            <el-option value="english_word()" label="英文单词"></el-option>
+                        </el-option-group>
+                    </el-select>
                 </el-form-item>
             </div>
             <div>
                 <div class="flex">
-                    <el-form-item label="Faker" class="w-1/3">
-                        <el-select v-model="field.faker" filterable class="w-full" allow-create default-first-option>
-                            <el-option-group label="自定义方法举例" disabled>
-                                <el-option value="enum">enum('video','music', 'image')</el-option>
-                                <el-option value="fixed">原样输出 fixed('精选')</el-option>
-                            </el-option-group>
-                            <el-option-group label="数字">
-                                <el-option value="rand(0, 1)" label="Boolean"></el-option>
-                                <el-option value="rand(1, 2)" label="2 数字枚选"></el-option>
-                                <el-option value="rand(1, 3)" label="3 数字枚选"></el-option>
-                                <el-option value="rand(1, 4)" label="4 数字枚选"></el-option>
-                                <el-option value="rand(1, 5)" label="5 数字枚选"></el-option>
-                                <el-option value="rand(1, 6)" label="6 数字枚选"></el-option>
-                                <el-option value="rand(1, 10)" label="10内随机数"></el-option>
-                                <el-option value="rand(1, 20)" label="1 - 20 随机数"></el-option>
-                                <el-option value="rand(1, 50)" label="1 - 50 随机数"></el-option>
-                                <el-option value="rand(1, 100)" label="1 - 100 随机数"></el-option>
-                                <el-option value="rand(1, 500)" label="1 - 500 随机数"></el-option>
-                                <el-option value="rand(10, 100)" label="10 - 100 随机数"></el-option>
-                                <el-option value="rand(100, 900)" label="100 - 900 随机数"></el-option>
-                                <el-option value="rand(1000, 9000)" label="1000 - 9000 随机数"></el-option>
-                                <el-option value="rand(100000, 90000)" label="10000 - 90000 随机数"></el-option>
-                            </el-option-group>
-                            <el-option-group label="文字">
-                                <el-option value="random_chinese(2)" label="2字"></el-option>
-                                <el-option value="random_chinese(3)" label="3字"></el-option>
-                                <el-option value="random_chinese(4)" label="4字"></el-option>
-                                <el-option value="random_chinese(6)" label="6字"></el-option>
-                                <el-option value="random_chinese(8)" label="8字"></el-option>
-                                <el-option value="random_chinese(10)" label="10字"></el-option>
-                                <el-option value="random_chinese(2, 4)" label="2 - 4字"></el-option>
-                                <el-option value="random_chinese(10, 15)" label="10 - 15字"></el-option>
-                                <el-option value="random_chinese(15, 20)" label="15 - 20字"></el-option>
-                                <el-option value="random_chinese(80, 100)" label="段落"></el-option>
-                                <el-option value="random_chinese(800, 1200)" label="文章"></el-option>
-                            </el-option-group>
-                            <el-option-group label="媒体">
-                                <el-option value="random_image('square')" label="方图片"></el-option>
-                                <el-option value="random_image('fat')" label="宽图片"></el-option>
-                                <el-option value="random_image('tall')" label="高图片"></el-option>
-                                <el-option value="random_video('fat')" label="宽视频"></el-option>
-                                <el-option value="random_video('tall')" label="高视频"></el-option>
-                            </el-option-group>
-                            <el-option-group label="时间">
-                                <el-option value="random_date('future')" label="未来"></el-option>
-                                <el-option value="random_date('past')" label="过去"></el-option>
-                            </el-option-group>
-                            <el-option-group label="网址">
-                                <el-option value="random_url()" label="URL"></el-option>
-                            </el-option-group>
-                            <el-option-group label="英文">
-                                <el-option value="english_word()" label="英文单词"></el-option>
-                            </el-option-group>
-                        </el-select>
+                    <el-form-item label="关联字段" class="mx-4">
+                        <el-radio v-model="field.belongsTo" :label="true">是</el-radio>
+                        <el-radio v-model="field.belongsTo" :label="false">否</el-radio>
                     </el-form-item>
                     <div class="w-2/3 pl-4">
                         <el-form-item label="特性">
@@ -276,8 +223,6 @@
         field_name: '',
         belongsTo: false,
         type: 'string',
-        foreign_policy: '',
-        foreign_table: '',
         methods: [],
         comment: '',
         default: '',
