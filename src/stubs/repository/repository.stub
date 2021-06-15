@@ -10,7 +10,7 @@ class DummyModelRepository extends BaseRepository
 {
     public function getList(array $params)
     {
-        $query = $this->model->select(['id', DummyFields]);
+        $query = DummyModel::select(['id', DummyFields]);
 
         /*
         $query->when($params[], function($q, $name) {

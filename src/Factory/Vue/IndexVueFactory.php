@@ -18,7 +18,7 @@ class IndexVueFactory extends MakeFactory implements FactoryContract
 
     public function getFilePath(): string
     {
-        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/Index.vue';
+        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/views/Index.vue';
     }
 
 

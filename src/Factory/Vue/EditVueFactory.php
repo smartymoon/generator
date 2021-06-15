@@ -17,7 +17,7 @@ class EditVueFactory extends MakeFactory implements FactoryContract
 
     public function getFilePath(): string
     {
-        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/Edit.vue';
+        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/views/Edit.vue';
     }
 
 

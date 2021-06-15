@@ -17,7 +17,7 @@ class ShowVueFactory extends MakeFactory implements FactoryContract
 
     public function getFilePath(): string
     {
-        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/Show.vue';
+        return base_path('resources/js/Pages/') . $this->modelPathInView() . '/views/Show.vue';
     }
 
 

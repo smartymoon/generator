@@ -10,24 +10,27 @@ use Inertia\Inertia;
 
 class DummyModelController extends Controller
 {
-    protected DummyModelRepository $DummyVariableModelRepository;
+    public function __construct(
+        public DummyModelRepository $DummyVariableModelRepository
+    ) {}
 
-    public function __construct(DummyModelRepository $DummyVariableModelRepository)
+    /**
+     * show List/Index Page.
+     */
+    public function DummyModelIndexPage()
     {
-        $this->DummyVariableModelRepository = $DummyVariableModelRepository;
+        return Inertia::render('DummyPathInView/views/Index');
     }
 
     /**
-     * Display a listing of the resource.
+     * show List Data.
      * @param  \Illuminate\Http\Request  $request
      */
-    public function index(Request $request)
+    public function DummyModelListData(Request $request)
     {
-        $DummyPluralModel = $this->DummyVariableModelRepository->getList(
+        return $this->DummyVariableModelRepository->getList(
             $request->all([ ])
         );
-
-        return Inertia::render('DummyPathInView/Index', compact('DummyPluralModel'));
     }
 
     /**
@@ -36,7 +39,7 @@ class DummyModelController extends Controller
     public function create()
     {
         //
-        return Inertia::render('DummyPathInView/Edit');
+        return Inertia::render('DummyPathInView/views/Edit');
     }
 
     /**
@@ -57,7 +60,7 @@ class DummyModelController extends Controller
      */
     public function show(DummyModel $DummyVariableModel)
     {
-        return Inertia::render('DummyPathInView/Show', compact('$DummyVariableModel');
+        return Inertia::render('DummyPathInView/views/Show', compact('$DummyVariableModel');
     }
 
     /**
@@ -66,8 +69,7 @@ class DummyModelController extends Controller
      */
     public function edit(DummyModel $DummyVariableModel)
     {
-        //
-        return Inertia::render('DummyPathInView/Edit', compact('DummyVariableModel'));
+        return Inertia::render('DummyPathInView/views/Edit', compact('DummyVariableModel'));
     }
 
     /**
@@ -77,7 +79,6 @@ class DummyModelController extends Controller
      */
     public function update(Request $request, DummyModel $DummyVariableModel)
     {
-        //
         // 这里可以用 validate, 取代 request File
         return \Redirect::to('/')->with(['success' => '更新成功']);
     }
@@ -88,7 +89,6 @@ class DummyModelController extends Controller
      */
     public function destroy(DummyModel $DummyVariableModel)
     {
-        //
         $DummyVariableModel->delete();
         return \Redirect::to('/')->with(['success' => '删除成功']);
     }
