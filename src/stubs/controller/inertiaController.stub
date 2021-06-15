@@ -38,7 +38,6 @@ class DummyModelController extends Controller
      */
     public function create()
     {
-        //
         return Inertia::render('DummyPathInView/views/Edit');
     }
 
@@ -49,8 +48,6 @@ class DummyModelController extends Controller
      */
     public function store(Request $request)
     {
-        // 这里可以用 validate, 取代 request File
-
         return \Redirect::to('/')->with(['success' => '保存成功']);
     }
 
@@ -60,7 +57,7 @@ class DummyModelController extends Controller
      */
     public function show(DummyModel $DummyVariableModel)
     {
-        return Inertia::render('DummyPathInView/views/Show', compact('$DummyVariableModel');
+        return Inertia::render('DummyPathInView/views/Show', compact('DummyVariableModel');
     }
 
     /**
@@ -79,7 +76,6 @@ class DummyModelController extends Controller
      */
     public function update(Request $request, DummyModel $DummyVariableModel)
     {
-        // 这里可以用 validate, 取代 request File
         return \Redirect::to('/')->with(['success' => '更新成功']);
     }
 

@@ -54,12 +54,12 @@ class MigrationFactory extends MakeFactory implements FactoryContract
         $content = "\n";
         foreach($this->config->fields as $field) {
             // make filed name
-            if ($field['foreign_policy']) {
-                $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
-                $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
-            } else {
-                $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
-            }
+            // if ($field['foreign_policy']) {
+            //    $foreign = $this->makeForeign($field['field_name'], $field['foreign_policy'], $field['foreign_table']);
+            //    $content .=  $foreign ?  ($this->tab(3) . $foreign. "\n") : '';
+            // } else {
+            $content .= $this->tab(3).'$table->'. $this->makeFieldType($field['field_name'], $field['type']);
+            //}
 
             // make methods
             foreach($field['methods'] as $method) {
@@ -73,12 +73,20 @@ class MigrationFactory extends MakeFactory implements FactoryContract
 
             // make default
             if ($field['default']) {
-                $content .= "->default('" . $field['default'] . "')";
+                if ($field['default'] == 'true') {
+                    $content .= "->default(true)";
+                } else if ($field['default'] == 'false') {
+                    $content .= "->default(false)";
+                } else {
+                    $content .= "->default('" . $field['default'] . "')";
+                }
             }
+            $content .= ";\n";
         }
-        return $content .= ";\n";
+        return $content;
     }
 
+    /*
     private function makeForeign(string $field_name, string $foreign_policy, string $foreign_table = null): string
     {
         if (!$foreign_policy) {
@@ -99,10 +107,11 @@ class MigrationFactory extends MakeFactory implements FactoryContract
 
         return  $foreign . ';';
     }
+    */
 
     private function makeMethods(string $field_name, string $method): string
     {
-        $this->checkMigrateMethod($field_name, $method);
+        // $this->checkMigrateMethod($field_name, $method);
         // return $position = strpos($migrate, '(') ? $migrate : $migrate . '()';
         return $method . '()';
     }
@@ -146,7 +155,7 @@ class MigrationFactory extends MakeFactory implements FactoryContract
 
     private function makeFieldType(string $field_name, string $field_config_type): string
     {
-        $this->checkMigrateMethod($field_name, $field_config_type);
+        // $this->checkMigrateMethod($field_name, $field_config_type);
         $position = strpos($field_config_type, '(');
         if ($position === false) {
             return $field_config_type . '(\''. $field_name . '\')';

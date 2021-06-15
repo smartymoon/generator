@@ -15,6 +15,6 @@ class ShowTest extends TestCase
     public function test_DummyVariableModel_detail()
     {
         $response = $this->json('get', '/');
-        $response->assertStrats(200);
+        $response->assertStatus(200);
     }
 }

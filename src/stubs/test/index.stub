@@ -16,6 +16,6 @@ class IndexTest extends TestCase
     public function test_DummyVariableModel_default_list()
     {
         $response = $this->json('get', '/');
-        $response->assertStrats(200);
+        $response->assertStatus(200);
     }
 }

@@ -16,6 +16,7 @@ class Config
      */
     public string $module;
     public bool $inModule;
+    public string $template;
 
     /**
      * $fields = [
@@ -53,6 +54,8 @@ class Config
      */
     public function __construct(Request $request)
     {
+        $this->template = $request->input('template');
+
         // controller_namespace,
         $this->module = $request->input('module') ?: '/';
 
@@ -67,7 +70,7 @@ class Config
         // $fields
         $this->setFields($request->input('fields'));
 
-        $this->inModule =  $this->module === '/';
+        $this->inModule =  $this->module !== '/';
 
         $this->hasRepository = in_array('repository', $request->input('to_create_files'));
 

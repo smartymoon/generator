@@ -111,11 +111,11 @@
                 <el-form-item label="Faker" class="w-1/3">
                     <el-select v-model="field.faker" filterable class="w-full" allow-create default-first-option>
                         <el-option-group label="自定义方法举例" disabled>
-                            <el-option value="enum">enum('video','music', 'image')</el-option>
                             <el-option value="fixed">原样输出 fixed('精选')</el-option>
                         </el-option-group>
                         <el-option-group label="数字">
                             <el-option value="rand(0, 1)" label="Boolean"></el-option>
+                            <el-option value="enum" label="Enum"></el-option>
                             <el-option value="rand(1, 2)" label="2 数字枚选"></el-option>
                             <el-option value="rand(1, 3)" label="3 数字枚选"></el-option>
                             <el-option value="rand(1, 4)" label="4 数字枚选"></el-option>

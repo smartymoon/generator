@@ -26,7 +26,6 @@ class FactoryFactory extends MakeFactory implements FactoryContract
         return $this->dealModulePath(base_path('database/factories/')) . $this->getModelClass() . 'Factory.php';
     }
 
-
     private function makeFakers(): string
     {
         $content = "\n";
@@ -34,9 +33,9 @@ class FactoryFactory extends MakeFactory implements FactoryContract
             $enumsExp = null;
             if ($field['faker'] == 'enum') {
                 if ($moduleInUse = $this->dealModuleInUse()) {
-                    $enumsExp = '/App/Enums/' . $moduleInUse . $field['enums']['fileName'] . '::toValues()';
+                    $enumsExp = '\App\Enums\\' . $moduleInUse . $field['enum']['fileName'] . '::toValues()';
                 } else {
-                    $enumsExp = '/App/Enums/' . $field['enums']['fileName'] . '::toValues()';
+                    $enumsExp = '/App/Enums/' . $field['enum']['fileName'] . '::toValues()';
                 }
                 $field['faker'] = 'enum(' . $enumsExp . ')';
             }
