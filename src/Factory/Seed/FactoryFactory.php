@@ -31,12 +31,21 @@ class FactoryFactory extends MakeFactory implements FactoryContract
     {
         $content = "\n";
         foreach($this->config->fields as $field) {
+            $enumsExp = null;
+            if ($field['faker'] == 'enum') {
+                if ($moduleInUse = $this->dealModuleInUse()) {
+                    $enumsExp = '/App/Enums/' . $moduleInUse . $field['enums']['fileName'] . '::toValues()';
+                } else {
+                    $enumsExp = '/App/Enums/' . $field['enums']['fileName'] . '::toValues()';
+                }
+                $field['faker'] = 'enum(' . $enumsExp . ')';
+            }
             $content .= $this->tab(3). $this->makeFaker($field['field_name'], $field['faker']). "\n";
         }
         return $content;
     }
 
-    private function makeFaker(string $field_name, string $faker): string
+    private function makeFaker(string $field_name, string $faker, string $enum_file = null): string
     {
         if ($faker) {
             return "'$field_name' => "

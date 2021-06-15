@@ -195,7 +195,7 @@
                 <div>
                     <div class="flex mb-5">
                         <span class="align-middle">枚举</span>
-                        <el-input v-model="field.enum.fileName" placeholder="文件名" class="w-32 pl-6" size="mini"></el-input>
+                        <el-input v-model="field.enum.fileName" placeholder="文件名" class="w-64 pl-6" size="mini"></el-input>
                         <el-button size="mini" class="ml-2" @click="addEnum(field.enum.list)">加规则</el-button>
                     </div>
                     <div class="flex"  v-for="(myEnum,key) in field.enum.list" :key="key">

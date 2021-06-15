@@ -1,6 +1,8 @@
 <?php
 namespace Smartymoon\Generator;
 
+use Spatie\Enum\Enum;
+
 class Faker
 {
 
@@ -53,8 +55,7 @@ class Faker
         return $array[array_rand($array)];
     }
 
-    static public function enum() {
-        $items = func_get_args();
+    static public function enum($items) {
         return $items[array_rand($items)];
     }
 
