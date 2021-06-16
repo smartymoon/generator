@@ -57,7 +57,7 @@ class DummyModelController extends Controller
      */
     public function show(DummyModel $DummyVariableModel)
     {
-        return Inertia::render('DummyPathInView/views/Show', compact('DummyVariableModel');
+        return Inertia::render('DummyPathInView/views/Show', compact('DummyVariableModel'));
     }
 
     /**

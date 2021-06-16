@@ -6,10 +6,10 @@
 export default {
   props: {
     // 要维护的数据
-      DummyVariableModel: {
-        type: Object,
-        required: true
-      }
+    DummyVariableModel: {
+      type: Object,
+      required: true
+    }
   },
   setup(props) {
     return {
