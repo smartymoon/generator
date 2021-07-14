@@ -1,7 +1,8 @@
 # Laravel 文件自动生成工具
 
 ## 安装
-```composer require smartymoon/generator```
+```composer require smartymoon/generator --dev```
+打开 http://yourdomain.test/lee 即可使用
 
 ## 一览
 ![Snipaste_2021-07-14_10-30-17](https://user-images.githubusercontent.com/12489528/125551336-0bfb6ed5-0c4c-4e67-969a-42a13975140a.png)
