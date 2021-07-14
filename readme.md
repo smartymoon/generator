@@ -2,6 +2,7 @@
 
 ## 安装
 ```composer require smartymoon/generator --dev```
+
 打开 http://yourdomain.test/lee 即可使用
 
 ## 一览
@@ -23,4 +24,5 @@
 
 ## 使用建议
 我深知每个团队的规范都不同，我的习惯和你的大概率是不同的。所以建议 Fork 后二次加工成适合自己的模板
+
 希望你能给我一个 Star ，感谢
